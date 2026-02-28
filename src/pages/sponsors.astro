@@ -1,0 +1,16 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import sponsors from "../data/sponsors.json";
+---
+
+<BaseLayout title="Sponsors • Open Studios">
+  <div class="card">
+    <h2 style="margin-top:0">Sponsors</h2>
+    <p>Replace these with real logos/links later.</p>
+    <ul>
+      {sponsors.map(s => (
+        <li><a href={s.url} target="_blank" rel="noopener noreferrer">{s.name}</a></li>
+      ))}
+    </ul>
+  </div>
+</BaseLayout>

@@ -19,10 +19,8 @@ const windows = [
     {windows.map((w, i) => (
       <a class="windowLink" href={w.href} aria-label={w.title}>
         <WindowSVG title={w.title} />
-
-        {/* Put the cat only on the first window */}
+        {/* Put the cat only on the first window as a fun accent (change as you like) */}
         {i === 0 && <CatSillSVG />}
-
         <div class="windowLabel">
           <span>{w.title}</span>
           <small>{w.hint}</small>
@@ -33,10 +31,6 @@ const windows = [
 
   <div class="footerSponsors">
     <strong>Sponsors:</strong>
-    {sponsors.map(s => (
-      <a href={s.url} target="_blank" rel="noopener noreferrer">
-        {s.name}
-      </a>
-    ))}
+    {sponsors.map(s => <a href={s.url} target="_blank" rel="noopener noreferrer">{s.name}</a>)}
   </div>
 </BaseLayout>

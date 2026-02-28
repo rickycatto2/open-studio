@@ -1,0 +1,14 @@
+[
+  { "name": "Avery Bloom", "studio": "2A", "insta": "averybloom.art", "bio": "Abstract painter obsessed with bright edges and soft gradients." },
+  { "name": "Malik Rivers", "studio": "2B", "insta": "malikrivers.studio", "bio": "Ceramics and small sculpture with a love for imperfect symmetry." },
+  { "name": "Jun Park", "studio": "3C", "insta": "junparkprints", "bio": "Risograph + printmaking. Posters, zines, and the occasional weird bird." },
+  { "name": "Sofia Vega", "studio": "4D", "insta": "sofiavega.photo", "bio": "Documentary-style photography and portraits with a cinematic feel." },
+  { "name": "Rowan Clarke", "studio": "5E", "insta": "rowanclarke.works", "bio": "Wood + mixed media. If it can be joined, it can be art." },
+  { "name": "Imani Stone", "studio": "6F", "insta": "imanistone", "bio": "Textile artist weaving loud color stories into soft objects." },
+  { "name": "Theo Nguyen", "studio": "7A", "insta": "theonguyen.design", "bio": "Illustration and bold typographic experiments." },
+  { "name": "Casey Hart", "studio": "7B", "insta": "caseyhart.art", "bio": "Oil paintings with moody lighting and too many shadows (on purpose)." },
+  { "name": "Priya Desai", "studio": "8C", "insta": "priyadesai.art", "bio": "Ink drawings, micro-details, and the occasional giant mural." },
+  { "name": "Luis Moreno", "studio": "8D", "insta": "luismoreno.studio", "bio": "Metal work and kinetic pieces. Things that move are better." },
+  { "name": "Nina Fox", "studio": "9E", "insta": "ninafox.art", "bio": "Collage + found materials. Paper archaeology, basically." },
+  { "name": "Harper Quinn", "studio": "9F", "insta": "harperquinn", "bio": "Glass and light studies — reflections are the whole point." }
+]

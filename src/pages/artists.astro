@@ -1,0 +1,57 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import artists from "../data/artists.json";
+---
+
+<BaseLayout title="Artists • Open Studios">
+  <div class="card">
+    <h2 style="margin-top:0">Artists</h2>
+    <p style="color:rgba(17,24,39,0.72)">
+      Search by name, studio, Instagram, or keywords in the bio.
+    </p>
+
+    <div class="searchRow">
+      <input id="q" type="search" placeholder="Search artists…" />
+    </div>
+
+    <div id="grid" class="artistGrid"></div>
+  </div>
+
+  <script type="module">
+    const data = /** @type {Array<{name:string, studio:string, insta:string, bio:string}>} */ (
+      JSON.parse({JSON.stringify(JSON.stringify(artists))})
+    );
+
+    const q = document.getElementById("q");
+    const grid = document.getElementById("grid");
+
+    function render(list){
+      grid.innerHTML = list.map(a => `
+        <div class="artistCard">
+          <h3>${a.name}</h3>
+          <p>${a.bio}</p>
+          <div class="artistMeta">
+            <span class="pill">Studio ${a.studio}</span>
+            <a class="pill" href="https://instagram.com/${a.insta.replace(/^@/,'')}" target="_blank" rel="noopener noreferrer">
+              @${a.insta.replace(/^@/,'')}
+            </a>
+          </div>
+        </div>
+      `).join("");
+    }
+
+    function filter(){
+      const term = (q.value || "").trim().toLowerCase();
+      if(!term) return render(data);
+
+      const f = data.filter(a => {
+        const blob = `${a.name} ${a.studio} ${a.insta} ${a.bio}`.toLowerCase();
+        return blob.includes(term);
+      });
+      render(f);
+    }
+
+    q.addEventListener("input", filter);
+    render(data);
+  </script>
+</BaseLayout>

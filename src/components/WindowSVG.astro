@@ -1,0 +1,18 @@
+---
+const { title } = Astro.props;
+---
+
+<svg viewBox="0 0 320 280" width="100%" height="auto" aria-label={title} role="img">
+  <!-- frame -->
+  <rect x="28" y="22" width="264" height="236" rx="12" fill="var(--windowFrame)"/>
+  <!-- inner -->
+  <rect x="44" y="38" width="232" height="204" rx="10" fill="#0b1220" opacity="0.18"/>
+  <!-- panes -->
+  <rect x="52" y="46" width="216" height="90" rx="8" fill="var(--glassTop)"/>
+  <rect x="52" y="144" width="216" height="90" rx="8" fill="var(--glassBottom)"/>
+  <!-- divider -->
+  <rect x="44" y="138" width="232" height="8" fill="var(--windowFrame)" opacity="0.9"/>
+  <!-- sill -->
+  <rect x="18" y="248" width="284" height="24" rx="6" fill="#f3efe6"/>
+  <rect x="18" y="252" width="284" height="6" rx="3" fill="#d7d2c6" opacity="0.55"/>
+</svg>

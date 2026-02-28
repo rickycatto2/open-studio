@@ -1,0 +1,30 @@
+---
+import "../styles/global.css";
+const { title = "Open Studios" } = Astro.props;
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>{title}</title>
+  </head>
+  <body class="bricks">
+    <div class="container">
+      <header>
+        <div class="brand">
+          <h1>Open Studios</h1>
+          <p>Click a window to explore • (proof of concept)</p>
+        </div>
+        <nav class="topnav">
+          <a href="/artists">Artists</a>
+          <a href="/parking">Parking</a>
+          <a href="/food">Food</a>
+        </nav>
+      </header>
+
+      <slot />
+    </div>
+  </body>
+</html>

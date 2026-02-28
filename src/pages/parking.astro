@@ -1,0 +1,28 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+---
+
+<BaseLayout title="Parking • Open Studios">
+  <div class="card">
+    <h2 style="margin-top:0">Parking</h2>
+    <p>Drop in your real embed later. For now, this is a placeholder map section.</p>
+
+    <div style="border-radius:16px; overflow:hidden; border:1px solid rgba(17,24,39,0.12)">
+      <iframe
+        title="Map placeholder"
+        width="100%"
+        height="360"
+        style="border:0"
+        loading="lazy"
+        referrerpolicy="no-referrer-when-downgrade"
+        src="https://www.google.com/maps?q=Kansas%20City%20MO&output=embed">
+      </iframe>
+    </div>
+
+    <ul>
+      <li>Tip: best lot after 5pm</li>
+      <li>Tip: accessible entrance location</li>
+      <li>Tip: bike parking spot</li>
+    </ul>
+  </div>
+</BaseLayout>
