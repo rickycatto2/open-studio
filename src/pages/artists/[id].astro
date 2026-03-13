@@ -1,0 +1,243 @@
+---
+import BrickWall from "../../components/BrickWall.astro";
+import artists from "../../data/artists.json";
+
+// sort by studio number first
+const sortedArtists = [...artists].sort((a,b)=>{
+  if(a.studioNumber !== b.studioNumber){
+    return a.studioNumber - b.studioNumber
+  }
+  return a.display_name.localeCompare(b.display_name)
+})
+
+export async function getStaticPaths() {
+  return sortedArtists.map((artist, index) => ({
+    params: { id: artist.id },
+    props: {
+      artist,
+      index
+    }
+  }));
+}
+
+const { artist, index } = Astro.props;
+
+const prev = sortedArtists[index - 1];
+const next = sortedArtists[index + 1];
+---
+
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>{artist.display_name}</title>
+</head>
+
+<body>
+
+<BrickWall cols={30} rows={100}>
+
+<main class="artistPage">
+
+<a class="backLink" href="/artists">← Back to artists</a>
+
+<div class="artistCard">
+
+<img
+  src={artist.image}
+  alt={artist.display_name}
+  class="artistImage"
+/>
+
+<div class="artistDetails">
+
+<h1>{artist.display_name}</h1>
+
+<p class="studio">
+Studio {artist.studioNumber}
+</p>
+
+{artist.art_type && (
+<p class="medium">
+{artist.art_type}
+</p>
+)}
+
+<a
+  href="https://instagram.com/socialName"
+  target="_blank"
+  rel="noopener"
+  class="social"
+>
+@socialName
+</a>
+
+</div>
+
+</div>
+
+<nav class="artistNav">
+
+{prev && (
+<a class="prev" href={`/artists/${prev.id}`}>
+← {prev.display_name}
+</a>
+)}
+
+{next && (
+<a class="next" href={`/artists/${next.id}`}>
+{next.display_name} →
+</a>
+)}
+
+</nav>
+
+</main>
+
+</BrickWall>
+
+</body>
+</html>
+
+<style is:global>
+
+html,body{
+margin:0;
+padding:0;
+min-height:100%;
+}
+
+body{
+background:#E4A8CB;
+
+font-family:
+"Avenir Next",
+"Avenir",
+"Helvetica Neue",
+Helvetica,
+Arial,
+sans-serif;
+}
+
+*,
+*::before,
+*::after{
+box-sizing:border-box;
+}
+
+img{
+max-width:100%;
+display:block;
+}
+
+</style>
+
+<style>
+
+.artistPage{
+position:relative;
+z-index:2;
+
+width:min(900px,100%);
+margin:auto;
+
+padding:40px 20px 60px;
+}
+
+.backLink{
+color:white;
+text-decoration:none;
+font-size:.9rem;
+
+text-shadow:0 2px 10px rgba(0,0,0,.25);
+}
+
+.backLink:hover{
+text-decoration:underline;
+}
+
+.artistCard{
+margin-top:20px;
+}
+
+/* removes gap */
+.artistImage{
+width:100%;
+height:auto;
+display:block;
+}
+
+.artistDetails{
+
+background:rgba(255,255,255,.9);
+
+padding:30px;
+
+text-align:center;
+
+margin-top:0;
+}
+
+.artistDetails h1{
+margin:0 0 10px;
+
+font-size:clamp(2rem,3vw,2.6rem);
+font-weight:400;
+}
+
+.studio{
+margin:0;
+font-size:1.2rem;
+}
+
+.medium{
+margin:12px 0;
+
+font-size:1rem;
+line-height:1.4;
+}
+
+.social{
+display:inline-block;
+
+margin-top:14px;
+
+font-size:1rem;
+
+color:#111;
+text-decoration:none;
+}
+
+.social:hover{
+text-decoration:underline;
+}
+
+/* next prev nav */
+
+.artistNav{
+
+margin-top:40px;
+
+display:flex;
+justify-content:space-between;
+
+gap:20px;
+
+color:white;
+
+text-shadow:0 2px 10px rgba(0,0,0,.25);
+}
+
+.artistNav a{
+
+color:white;
+text-decoration:none;
+
+font-size:.95rem;
+}
+
+.artistNav a:hover{
+text-decoration:underline;
+}
+
+</style>

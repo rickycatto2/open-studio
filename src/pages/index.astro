@@ -1,42 +1,206 @@
 ---
-import BaseLayout from "../layouts/BaseLayout.astro";
-import WindowSVG from "../components/WindowSVG.astro";
-import CatSillSVG from "../components/CatSillSVG.astro";
-import sponsors from "../data/sponsors.json";
+import BrickWall from "../components/BrickWall.astro";
 
 const windows = [
-  { title: "Artists", href: "/artists", hint: "Search directory" },
-  { title: "Parking", href: "/parking", hint: "Map + tips" },
-  { title: "Entertainment", href: "/entertainment", hint: "Schedule" },
-  { title: "Food", href: "/food", hint: "Vendors" },
-  { title: "Subscribe", href: "/subscribe", hint: "Newsletter" },
-  { title: "Sponsors", href: "/sponsors", hint: "Thanks!" }
+  { title: "", bg: "/assets/window_food.svg", isStatic: true },
+  { title: "Artists", href: "/artists", bg: "/assets/window_artists.svg" },
+  { title: "Entertainment", href: "/entertainment", bg: "/assets/window_entertainment.svg" },
+  { title: "Parking", href: "/parking", bg: "/assets/window_parking.svg" },
+  { title: "Subscribe", href: "/subscribe", bg: "/assets/window_subscribe.svg" },
+  { title: "Sponsors", href: "/sponsors", bg: "/assets/window_sponsors.svg" }
 ];
 ---
 
-<BaseLayout title="Open Studios • Home">
-  <div class="grid">
-    {windows.map((w, i) => (
-      <a class="windowLink" href={w.href} aria-label={w.title}>
-        <WindowSVG title={w.title} />
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Livestock Exchange Open Studios | Spring 2026</title>
+  </head>
 
-        {/* Put the cat only on the first window */}
-        {i === 0 && <CatSillSVG />}
+  <body>
+    <BrickWall cols={30} rows={100}>
+      <main class="home">
+        <section class="windowGrid" aria-label="Site sections">
+          {windows.map((w) =>
+            w.isStatic ? (
+              <div class="windowTile windowTileStatic" aria-label={w.title}>
+                <div class="windowShell">
+                  <img
+                    src={w.bg}
+                    alt=""
+                    class="windowLayer windowBackground"
+                    loading="eager"
+                    decoding="async"
+                  />
 
-        <div class="windowLabel">
-          <span>{w.title}</span>
-          <small>{w.hint}</small>
-        </div>
-      </a>
-    ))}
-  </div>
+                  <div class="windowTitle">
+                    <span>{w.title}</span>
+                  </div>
 
-  <div class="footerSponsors">
-    <strong>Sponsors:</strong>
-    {sponsors.map(s => (
-      <a href={s.url} target="_blank" rel="noopener noreferrer">
-        {s.name}
-      </a>
-    ))}
-  </div>
-</BaseLayout>
+                  <img
+                    src="/assets/window_frame.svg"
+                    alt=""
+                    class="windowLayer windowFrame"
+                    loading="eager"
+                    decoding="async"
+                  />
+                </div>
+              </div>
+            ) : (
+              <a class="windowTile windowLink" href={w.href} aria-label={w.title}>
+                <div class="windowShell">
+                  <img
+                    src={w.bg}
+                    alt=""
+                    class="windowLayer windowBackground"
+                    loading="eager"
+                    decoding="async"
+                  />
+
+                  <img
+                    src="/assets/window_frame.svg"
+                    alt=""
+                    class="windowLayer windowFrame"
+                    loading="eager"
+                    decoding="async"
+                  />
+                </div>
+              </a>
+            )
+          )}
+        </section>
+      </main>
+    </BrickWall>
+  </body>
+</html>
+
+<style is:global>
+  html,
+  body {
+    margin: 0;
+    padding: 0;
+    min-height: 100%;
+  }
+
+  body {
+    font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    background: #E4A8CB;
+  }
+
+  *,
+  *::before,
+  *::after {
+    box-sizing: border-box;
+  }
+
+  img {
+    max-width: 100%;
+  }
+</style>
+
+<style>
+  .home {
+    min-height: 100vh;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 40px 20px;
+  }
+
+  .windowGrid {
+    width: min(1120px, 100%);
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 28px 24px;
+    justify-items: center;
+    align-items: center;
+  }
+
+  .windowTile {
+    display: flex;
+    justify-content: center;
+    width: 100%;
+  }
+
+  .windowLink {
+    text-decoration: none;
+    transition: transform 160ms ease;
+  }
+
+  .windowLink:hover {
+    transform: translateY(-4px);
+  }
+
+  .windowLink:focus-visible {
+    outline: 3px solid rgba(255, 255, 255, 0.95);
+    outline-offset: 8px;
+    border-radius: 8px;
+  }
+
+  .windowShell {
+    position: relative;
+    width: min(100%, 320px);
+    aspect-ratio: 270.782 / 377.165;
+    flex: 0 0 auto;
+  }
+
+  .windowLayer {
+    position: absolute;
+    inset: 0;
+    display: block;
+    width: 100%;
+    height: 100%;
+  }
+
+  .windowBackground {
+    z-index: 1;
+  }
+
+  .windowTitle {
+    position: absolute;
+    inset: 0;
+    z-index: 2;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 1.25rem;
+    text-align: center;
+    pointer-events: none;
+  }
+
+  .windowTitle span {
+    color: #ffffff;
+    font-size: clamp(1.8rem, 4vw, 3rem);
+    font-weight: 800;
+    line-height: 0.95;
+    text-transform: uppercase;
+    letter-spacing: 0.02em;
+    text-shadow:
+      0 2px 8px rgba(0, 0, 0, 0.25),
+      0 0 1px rgba(0, 0, 0, 0.2);
+  }
+
+  .windowFrame {
+    z-index: 3;
+    pointer-events: none;
+  }
+
+  @media (max-width: 900px) {
+    .home {
+      padding: 28px 16px 36px;
+      align-items: start;
+    }
+
+    .windowGrid {
+      width: min(340px, 100%);
+      grid-template-columns: 1fr;
+      gap: 24px;
+    }
+
+    .windowShell {
+      width: min(100%, 320px);
+    }
+  }
+</style>
