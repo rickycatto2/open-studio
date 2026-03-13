@@ -1,243 +1,252 @@
 ---
 import BrickWall from "../../components/BrickWall.astro";
-import artists from "../../data/artists.json";
+import rawArtists from "../../data/artists.json";
 
-// sort by studio number first
-const sortedArtists = [...artists].sort((a,b)=>{
-  if(a.studioNumber !== b.studioNumber){
-    return a.studioNumber - b.studioNumber
-  }
-  return a.display_name.localeCompare(b.display_name)
-})
+type Artist = {
+  id: string;
+  additional_info?: string;
+  studioNumber: number;
+  display_name: string;
+  social_label?: string;
+  social_url?: string;
+  art_type?: string;
+  image: string;
+  thumbs: string;
+};
+
+const artists = rawArtists as Artist[];
+
+function sortArtists(list: Artist[]) {
+  return [...list].sort((a, b) => {
+    if (Number(a.studioNumber) !== Number(b.studioNumber)) {
+      return Number(a.studioNumber) - Number(b.studioNumber);
+    }
+
+    return a.display_name.localeCompare(b.display_name);
+  });
+}
 
 export async function getStaticPaths() {
+  const sortedArtists = sortArtists(artists);
+
   return sortedArtists.map((artist, index) => ({
-    params: { id: artist.id },
+    params: { id: String(artist.id) },
     props: {
       artist,
-      index
+      prevArtist: index > 0 ? sortedArtists[index - 1] : null,
+      nextArtist: index < sortedArtists.length - 1 ? sortedArtists[index + 1] : null
     }
   }));
 }
 
-const { artist, index } = Astro.props;
-
-const prev = sortedArtists[index - 1];
-const next = sortedArtists[index + 1];
+const {
+  artist,
+  prevArtist,
+  nextArtist
+} = Astro.props as {
+  artist: Artist;
+  prevArtist: Artist | null;
+  nextArtist: Artist | null;
+};
 ---
 
 <html lang="en">
-<head>
-<meta charset="utf-8" />
-<meta name="viewport" content="width=device-width,initial-scale=1" />
-<title>{artist.display_name}</title>
-</head>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>{artist.display_name} • Artists</title>
+  </head>
 
-<body>
+  <body>
+    <BrickWall cols={30} rows={100}>
+      <main class="artistPage">
+        <a class="backLink" href="/artists">← Back to artists</a>
 
-<BrickWall cols={30} rows={100}>
+        <div class="artistCard">
+          <img
+            src={artist.image}
+            alt={artist.display_name}
+            class="artistImage"
+            loading="eager"
+            decoding="async"
+          />
 
-<main class="artistPage">
+          <div class="artistDetails">
+            <h1>{artist.display_name}</h1>
 
-<a class="backLink" href="/artists">← Back to artists</a>
+            <p class="studio">Studio {artist.studioNumber}</p>
 
-<div class="artistCard">
+            {artist.art_type && (
+              <p class="medium">{artist.art_type}</p>
+            )}
 
-<img
-  src={artist.image}
-  alt={artist.display_name}
-  class="artistImage"
-/>
+            <a
+              href="https://www.instagram.com"
+              target="_blank"
+              rel="noopener noreferrer"
+              class="social"
+            >
+              @socialName
+            </a>
+          </div>
+        </div>
 
-<div class="artistDetails">
+        <nav class="artistNav" aria-label="Artist navigation">
+          <div class="artistNavSide artistNavPrev">
+            {prevArtist && (
+              <a href={`/artists/${prevArtist.id}`}>← {prevArtist.display_name}</a>
+            )}
+          </div>
 
-<h1>{artist.display_name}</h1>
-
-<p class="studio">
-Studio {artist.studioNumber}
-</p>
-
-{artist.art_type && (
-<p class="medium">
-{artist.art_type}
-</p>
-)}
-
-<a
-  href="https://instagram.com/socialName"
-  target="_blank"
-  rel="noopener"
-  class="social"
->
-@socialName
-</a>
-
-</div>
-
-</div>
-
-<nav class="artistNav">
-
-{prev && (
-<a class="prev" href={`/artists/${prev.id}`}>
-← {prev.display_name}
-</a>
-)}
-
-{next && (
-<a class="next" href={`/artists/${next.id}`}>
-{next.display_name} →
-</a>
-)}
-
-</nav>
-
-</main>
-
-</BrickWall>
-
-</body>
+          <div class="artistNavSide artistNavNext">
+            {nextArtist && (
+              <a href={`/artists/${nextArtist.id}`}>{nextArtist.display_name} →</a>
+            )}
+          </div>
+        </nav>
+      </main>
+    </BrickWall>
+  </body>
 </html>
 
 <style is:global>
+  html,
+  body {
+    margin: 0;
+    padding: 0;
+    min-height: 100%;
+  }
 
-html,body{
-margin:0;
-padding:0;
-min-height:100%;
-}
+  body {
+    background: #E4A8CB;
+    font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+  }
 
-body{
-background:#E4A8CB;
+  *,
+  *::before,
+  *::after {
+    box-sizing: border-box;
+  }
 
-font-family:
-"Avenir Next",
-"Avenir",
-"Helvetica Neue",
-Helvetica,
-Arial,
-sans-serif;
-}
-
-*,
-*::before,
-*::after{
-box-sizing:border-box;
-}
-
-img{
-max-width:100%;
-display:block;
-}
-
+  img {
+    max-width: 100%;
+    display: block;
+  }
 </style>
 
 <style>
+  .artistPage {
+    position: relative;
+    z-index: 2;
+    width: min(900px, 100%);
+    margin: 0 auto;
+    padding: 40px 20px 60px;
+  }
 
-.artistPage{
-position:relative;
-z-index:2;
+  .backLink {
+    color: white;
+    text-decoration: none;
+    font-size: 0.9rem;
+    text-shadow: 0 2px 10px rgba(0, 0, 0, 0.25);
+  }
 
-width:min(900px,100%);
-margin:auto;
+  .backLink:hover {
+    text-decoration: underline;
+  }
 
-padding:40px 20px 60px;
-}
+  .artistCard {
+    margin-top: 20px;
+  }
 
-.backLink{
-color:white;
-text-decoration:none;
-font-size:.9rem;
+  .artistImage {
+    width: 100%;
+    height: auto;
+  }
 
-text-shadow:0 2px 10px rgba(0,0,0,.25);
-}
+  .artistDetails {
+    margin-top: 0;
+    background: rgba(255, 255, 255, 0.9);
+    padding: 30px;
+    text-align: center;
+  }
 
-.backLink:hover{
-text-decoration:underline;
-}
+  .artistDetails h1 {
+    margin: 0 0 10px;
+    font-size: clamp(2rem, 3vw, 2.6rem);
+    font-weight: 400;
+  }
 
-.artistCard{
-margin-top:20px;
-}
+  .studio {
+    margin: 0;
+    font-size: 1.2rem;
+  }
 
-/* removes gap */
-.artistImage{
-width:100%;
-height:auto;
-display:block;
-}
+  .medium {
+    margin: 12px 0;
+    font-size: 1rem;
+    line-height: 1.4;
+  }
 
-.artistDetails{
+  .social {
+    display: inline-block;
+    margin-top: 14px;
+    font-size: 1rem;
+    color: #111;
+    text-decoration: none;
+  }
 
-background:rgba(255,255,255,.9);
+  .social:hover {
+    text-decoration: underline;
+  }
 
-padding:30px;
+  .artistNav {
+    margin-top: 40px;
+    display: flex;
+    justify-content: space-between;
+    gap: 20px;
+    color: white;
+    text-shadow: 0 2px 10px rgba(0, 0, 0, 0.25);
+  }
 
-text-align:center;
+  .artistNavSide {
+    flex: 1;
+  }
 
-margin-top:0;
-}
+  .artistNavPrev {
+    text-align: left;
+  }
 
-.artistDetails h1{
-margin:0 0 10px;
+  .artistNavNext {
+    text-align: right;
+  }
 
-font-size:clamp(2rem,3vw,2.6rem);
-font-weight:400;
-}
+  .artistNav a {
+    color: white;
+    text-decoration: none;
+    font-size: 0.95rem;
+  }
 
-.studio{
-margin:0;
-font-size:1.2rem;
-}
+  .artistNav a:hover {
+    text-decoration: underline;
+  }
 
-.medium{
-margin:12px 0;
+  @media (max-width: 700px) {
+    .artistPage {
+      padding: 24px 16px 40px;
+    }
 
-font-size:1rem;
-line-height:1.4;
-}
+    .artistDetails {
+      padding: 22px 18px;
+    }
 
-.social{
-display:inline-block;
+    .artistNav {
+      flex-direction: column;
+      gap: 12px;
+    }
 
-margin-top:14px;
-
-font-size:1rem;
-
-color:#111;
-text-decoration:none;
-}
-
-.social:hover{
-text-decoration:underline;
-}
-
-/* next prev nav */
-
-.artistNav{
-
-margin-top:40px;
-
-display:flex;
-justify-content:space-between;
-
-gap:20px;
-
-color:white;
-
-text-shadow:0 2px 10px rgba(0,0,0,.25);
-}
-
-.artistNav a{
-
-color:white;
-text-decoration:none;
-
-font-size:.95rem;
-}
-
-.artistNav a:hover{
-text-decoration:underline;
-}
-
+    .artistNavPrev,
+    .artistNavNext {
+      text-align: left;
+    }
+  }
 </style>
