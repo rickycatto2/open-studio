@@ -16,18 +16,14 @@ type Artist = {
 
 const artists = rawArtists as Artist[];
 
-function sortArtists(list: Artist[]) {
-  return [...list].sort((a, b) => {
+export async function getStaticPaths() {
+  const sortedArtists = [...rawArtists].sort((a, b) => {
     if (Number(a.studioNumber) !== Number(b.studioNumber)) {
       return Number(a.studioNumber) - Number(b.studioNumber);
     }
 
     return a.display_name.localeCompare(b.display_name);
   });
-}
-
-export async function getStaticPaths() {
-  const sortedArtists = sortArtists(artists);
 
   return sortedArtists.map((artist, index) => ({
     params: { id: String(artist.id) },
