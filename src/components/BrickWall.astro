@@ -11,10 +11,11 @@ const {
   class: className = ""
 } = Astro.props;
 
-// Keep the wall deterministic so it doesn't reshuffle every refresh.
+// deterministic random generator
 function seededRandom(seed: number) {
   let value = seed % 2147483647;
   if (value <= 0) value += 2147483646;
+
   return () => {
     value = (value * 16807) % 2147483647;
     return (value - 1) / 2147483646;
@@ -33,12 +34,15 @@ type BrickCell = {
 const cells: BrickCell[] = [];
 const cellMap = new Map<string, BrickCell>();
 
+// generate base brick grid
 for (let row = 0; row < rows; row++) {
   for (let col = 0; col < cols; col++) {
     const key = `${col}-${row}`;
-    const type: BrickCell["type"] = rand() < 0.03 ? "dark" : "base";
 
-    const cell = {
+    const type: BrickCell["type"] =
+      rand() < 0.03 ? "dark" : "base";
+
+    const cell: BrickCell = {
       id: key,
       col,
       row,
@@ -50,18 +54,25 @@ for (let row = 0; row < rows; row++) {
   }
 }
 
-// Force 3 eye bricks near the top so they are actually visible.
+// choose eye bricks
 const eyeKeys = new Set<string>();
-const topRowsLimit = Math.min(6, rows);
+const usedEyeRows = new Set<number>();
 
-// Pick 3 unique positions from the first few rows.
-while (eyeKeys.size < 3) {
+const topRowsLimit = Math.min(6, rows);
+const eyeCount = Math.min(3, topRowsLimit);
+
+// ensure no two eyes share a row
+while (eyeKeys.size < eyeCount) {
   const col = Math.floor(rand() * cols);
   const row = Math.floor(rand() * topRowsLimit);
+
+  if (usedEyeRows.has(row)) continue;
+
   eyeKeys.add(`${col}-${row}`);
+  usedEyeRows.add(row);
 }
 
-// Convert those cells to eye bricks.
+// convert those bricks to eye bricks
 for (const key of eyeKeys) {
   const cell = cellMap.get(key);
   if (cell) cell.type = "eyes";
@@ -89,13 +100,18 @@ for (const key of eyeKeys) {
               <div class="eye left-eye eye-a">
                 <div class="pupil pupil-a"></div>
               </div>
+
               <div class="eye right-eye eye-b">
                 <div class="pupil pupil-b"></div>
               </div>
             </div>
           ) : (
             <img
-              src={cell.type === "dark" ? "/assets/dark-brick.svg" : "/assets/brick-base.svg"}
+              src={
+                cell.type === "dark"
+                  ? "/assets/dark-brick.svg"
+                  : "/assets/brick-base.svg"
+              }
               alt=""
               class="brick-svg"
               loading="lazy"
@@ -113,194 +129,160 @@ for (const key of eyeKeys) {
 </section>
 
 <style>
+.brick-wall {
+  --brick-w: 84px;
+  --brick-h: 56px;
+
+  position: relative;
+  min-height: 100vh;
+  width: 100vw;
+  overflow: hidden;
+  background: #E4A8CB;
+}
+
+.brick-wall-grid {
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 1;
+  pointer-events: none;
+
+  width: calc(var(--wall-cols) * var(--brick-w));
+  height: calc(var(--wall-rows) * var(--brick-h));
+  min-width: 100%;
+}
+
+.brick-wall-content {
+  position: relative;
+  z-index: 20;
+  min-height: 100vh;
+  width: 100%;
+}
+
+.brick-cell {
+  position: absolute;
+  width: var(--brick-w);
+  height: var(--brick-h);
+
+  left: calc(var(--col) * var(--brick-w));
+  top: calc(var(--row) * var(--brick-h));
+}
+
+.brick-svg {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+.eye-brick {
+  position: relative;
+  width: 100%;
+  height: 100%;
+
+  background-image: url("/assets/dark-brick.svg");
+  background-size: 100% 100%;
+  background-repeat: no-repeat;
+}
+
+.eye {
+  position: absolute;
+  top: 6px;
+
+  width: 16px;
+  height: 16px;
+
+  border-radius: 50%;
+  background: #ef654e;
+
+  overflow: hidden;
+  transform-origin: center center;
+}
+
+.left-eye { left: 25px; }
+.right-eye { left: 45px; }
+
+.pupil {
+  position: absolute;
+
+  width: 7px;
+  height: 7px;
+
+  left: 4px;
+  top: 4px;
+
+  border-radius: 50%;
+  background: #8e382d;
+}
+
+.eye-a {
+  animation: blink-a 8.7s infinite;
+  animation-delay: var(--blink-a-delay);
+}
+
+.eye-b {
+  animation: blink-b 11.4s infinite;
+  animation-delay: var(--blink-b-delay);
+}
+
+.pupil-a {
+  animation: look-a 9.6s infinite ease-in-out;
+  animation-delay: var(--look-a-delay);
+}
+
+.pupil-b {
+  animation: look-b 12.1s infinite ease-in-out;
+  animation-delay: var(--look-b-delay);
+}
+
+@keyframes look-a {
+  0%,10%,28%,46%,66%,82%,100% { transform: translate(0,0); }
+  15%,23% { transform: translate(2px,-1px); }
+  52%,61% { transform: translate(-2px,1px); }
+  88%,94% { transform: translate(1px,2px); }
+}
+
+@keyframes look-b {
+  0%,18%,36%,54%,74%,88%,100% { transform: translate(0,0); }
+  24%,31% { transform: translate(1px,-1px); }
+  60%,69% { transform: translate(-1px,2px); }
+  93%,97% { transform: translate(2px,0); }
+}
+
+@keyframes blink-a {
+  0%,47%,49%,83%,85%,100% { transform: scaleY(1); }
+  48%,84% { transform: scaleY(0.08); }
+}
+
+@keyframes blink-b {
+  0%,28%,30%,72%,74%,100% { transform: scaleY(1); }
+  29%,73% { transform: scaleY(0.08); }
+}
+
+@media (max-width:1100px) {
+
   .brick-wall {
-    --brick-w: 84px;
-    --brick-h: 56px;
-
-    position: relative;
-    min-height: 100vh;
-    width: 100vw;
-    overflow: hidden;
-    background: #E4A8CB;
+    --brick-w:72px;
+    --brick-h:48px;
   }
 
-  .brick-wall-grid {
-    position: absolute;
-    top: 0;
-    left: 0;
-    z-index: 1;
-    pointer-events: none;
-    width: calc(var(--wall-cols) * var(--brick-w));
-    height: calc(var(--wall-rows) * var(--brick-h));
-    min-width: 100%;
+  .eye { width:14px; height:14px; top:5px; }
+  .left-eye { left:22px; }
+  .right-eye { left:39px; }
+
+  .pupil { width:6px; height:6px; }
+}
+
+@media (max-width:800px) {
+
+  .brick-wall {
+    --brick-w:56px;
+    --brick-h:37.33px;
   }
 
-  .brick-wall-content {
-    position: relative;
-    z-index: 20;
-    min-height: 100vh;
-    width: 100%;
-  }
+  .eye { width:11px; height:11px; top:4px; }
+  .left-eye { left:17px; }
+  .right-eye { left:30px; }
 
-  .brick-cell {
-    position: absolute;
-    width: var(--brick-w);
-    height: var(--brick-h);
-    left: calc(var(--col) * var(--brick-w));
-    top: calc(var(--row) * var(--brick-h));
-  }
-
-  .brick-svg {
-    display: block;
-    width: 100%;
-    height: 100%;
-  }
-
-  .eye-brick {
-    position: relative;
-    width: 100%;
-    height: 100%;
-    background-image: url("/assets/dark-brick.svg");
-    background-size: 100% 100%;
-    background-repeat: no-repeat;
-    background-position: center;
-  }
-
-  .eye {
-    position: absolute;
-    top: 6px;
-    width: 16px;
-    height: 16px;
-    border-radius: 50%;
-    background: #ef654e;
-    overflow: hidden;
-    transform-origin: center center;
-    z-index: 2;
-  }
-
-  .left-eye {
-    left: 25px;
-  }
-
-  .right-eye {
-    left: 45px;
-  }
-
-  .pupil {
-    position: absolute;
-    width: 7px;
-    height: 7px;
-    left: 4px;
-    top: 4px;
-    border-radius: 50%;
-    background: #8e382d;
-  }
-
-  .eye-a {
-    animation: blink-a 8.7s infinite;
-    animation-delay: var(--blink-a-delay);
-  }
-
-  .eye-b {
-    animation: blink-b 11.4s infinite;
-    animation-delay: var(--blink-b-delay);
-  }
-
-  .pupil-a {
-    animation: look-a 9.6s infinite ease-in-out;
-    animation-delay: var(--look-a-delay);
-  }
-
-  .pupil-b {
-    animation: look-b 12.1s infinite ease-in-out;
-    animation-delay: var(--look-b-delay);
-  }
-
-  @keyframes look-a {
-    0%   { transform: translate(0px, 0px); }
-    10%  { transform: translate(0px, 0px); }
-    15%  { transform: translate(2px, -1px); }
-    23%  { transform: translate(2px, -1px); }
-    28%  { transform: translate(0px, 0px); }
-    46%  { transform: translate(0px, 0px); }
-    52%  { transform: translate(-2px, 1px); }
-    61%  { transform: translate(-2px, 1px); }
-    66%  { transform: translate(0px, 0px); }
-    82%  { transform: translate(0px, 0px); }
-    88%  { transform: translate(1px, 2px); }
-    94%  { transform: translate(1px, 2px); }
-    100% { transform: translate(0px, 0px); }
-  }
-
-  @keyframes look-b {
-    0%   { transform: translate(0px, 0px); }
-    18%  { transform: translate(0px, 0px); }
-    24%  { transform: translate(1px, -1px); }
-    31%  { transform: translate(1px, -1px); }
-    36%  { transform: translate(0px, 0px); }
-    54%  { transform: translate(0px, 0px); }
-    60%  { transform: translate(-1px, 2px); }
-    69%  { transform: translate(-1px, 2px); }
-    74%  { transform: translate(0px, 0px); }
-    88%  { transform: translate(0px, 0px); }
-    93%  { transform: translate(2px, 0px); }
-    97%  { transform: translate(2px, 0px); }
-    100% { transform: translate(0px, 0px); }
-  }
-
-  @keyframes blink-a {
-    0%, 47%, 49%, 83%, 85%, 100% { transform: scaleY(1); }
-    48%, 84% { transform: scaleY(0.08); }
-  }
-
-  @keyframes blink-b {
-    0%, 28%, 30%, 72%, 74%, 100% { transform: scaleY(1); }
-    29%, 73% { transform: scaleY(0.08); }
-  }
-
-  @media (max-width: 1100px) {
-    .brick-wall {
-      --brick-w: 72px;
-      --brick-h: 48px;
-    }
-
-    .eye {
-      top: 5px;
-      width: 14px;
-      height: 14px;
-    }
-
-    .left-eye { left: 22px; }
-    .right-eye { left: 39px; }
-
-    .pupil {
-      width: 6px;
-      height: 6px;
-      left: 4px;
-      top: 4px;
-    }
-  }
-
-  @media (max-width: 800px) {
-    .brick-wall {
-      --brick-w: 56px;
-      --brick-h: 37.33px;
-    }
-
-    .eye {
-      top: 4px;
-      width: 11px;
-      height: 11px;
-    }
-
-    .left-eye { left: 17px; }
-    .right-eye { left: 30px; }
-
-    .pupil {
-      width: 5px;
-      height: 5px;
-      left: 3px;
-      top: 3px;
-    }
-  }
+  .pupil { width:5px; height:5px; }
+}
 </style>

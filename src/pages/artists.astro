@@ -5,10 +5,10 @@ import rawArtists from "../data/artists.json";
 type Artist = {
   id: string;
   additional_info?: string;
-  studioNumber: number;
+  studioNumber: number | string;
   display_name: string;
   social_label?: string;
-  social_url?: string;
+  website?: string;
   art_type?: string;
   image: string;
   thumbs: string;
@@ -16,18 +16,21 @@ type Artist = {
 
 const artists = (rawArtists as Artist[])
   .map((artist) => ({
-    id: artist.id,
+    id: String(artist.id),
     displayName: artist.display_name?.trim() ?? "",
     additionalInfo: artist.additional_info?.trim() ?? "",
     studioNumber: Number(artist.studioNumber),
     artType: artist.art_type?.replace(/\s+/g, " ").trim() ?? "",
     image: artist.image,
     thumb: artist.thumbs,
+    socialLabel: artist.social_label?.trim() ?? "",
+    website: artist.website?.trim() ?? "",
     searchText: [
       artist.display_name,
       artist.additional_info,
       artist.art_type,
-      artist.studioNumber
+      artist.studioNumber,
+      artist.social_label
     ]
       .filter(Boolean)
       .join(" ")
@@ -97,37 +100,36 @@ const artists = (rawArtists as Artist[])
     </BrickWall>
 
     <script is:inline>
-document.addEventListener("DOMContentLoaded", () => {
+      document.addEventListener("DOMContentLoaded", () => {
+        const searchInput = document.querySelector("#artist-search");
+        const cards = document.querySelectorAll(".artistCard");
+        const noResults = document.querySelector("#no-results");
 
-  const searchInput = document.querySelector("#artist-search");
-  const cards = document.querySelectorAll(".artistCard");
-  const noResults = document.querySelector("#no-results");
+        function filterArtists() {
+          if (!searchInput) return;
 
-  function filterArtists() {
-    const query = searchInput.value.trim().toLowerCase();
-    let visible = 0;
+          const query = searchInput.value.trim().toLowerCase();
+          let visible = 0;
 
-    cards.forEach(card => {
-      const text = card.dataset.search || "";
+          cards.forEach((card) => {
+            const text = card.dataset.search || "";
+            const match = text.includes(query);
 
-      const match = text.includes(query);
+            card.style.display = match ? "" : "none";
 
-      card.style.display = match ? "" : "none";
+            if (match) visible++;
+          });
 
-      if (match) visible++;
-    });
+          if (noResults) {
+            noResults.hidden = visible !== 0;
+          }
+        }
 
-    if (noResults) {
-      noResults.hidden = visible !== 0;
-    }
-  }
-
-  if (searchInput) {
-    searchInput.addEventListener("input", filterArtists);
-  }
-
-});
-</script>
+        if (searchInput) {
+          searchInput.addEventListener("input", filterArtists);
+        }
+      });
+    </script>
   </body>
 </html>
 

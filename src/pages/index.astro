@@ -3,11 +3,16 @@ import BrickWall from "../components/BrickWall.astro";
 
 const windows = [
   { title: "", bg: "/assets/window_food.svg", isStatic: true },
+  { title: "", bg: "/assets/window_date.svg", isStatic: true },
   { title: "Artists", href: "/artists", bg: "/assets/window_artists.svg" },
+
   { title: "Entertainment", href: "/entertainment", bg: "/assets/window_entertainment.svg" },
   { title: "Parking", href: "/parking", bg: "/assets/window_parking.svg" },
   { title: "Subscribe", href: "/subscribe", bg: "/assets/window_subscribe.svg" },
-  { title: "Sponsors", href: "/sponsors", bg: "/assets/window_sponsors.svg" }
+
+  { title: "", bg: "/assets/sponsor1.png", isStatic: true },
+  { title: "", bg: "/assets/sponsor2.png", isStatic: true },
+  { title: "", bg: "/assets/sponsor3.png", isStatic: true }
 ];
 ---
 
@@ -24,7 +29,7 @@ const windows = [
         <section class="windowGrid" aria-label="Site sections">
           {windows.map((w) =>
             w.isStatic ? (
-              <div class="windowTile windowTileStatic" aria-label={w.title}>
+              <div class="windowTile windowTileStatic" aria-hidden="true">
                 <div class="windowShell">
                   <img
                     src={w.bg}
@@ -33,10 +38,6 @@ const windows = [
                     loading="eager"
                     decoding="async"
                   />
-
-                  <div class="windowTitle">
-                    <span>{w.title}</span>
-                  </div>
 
                   <img
                     src="/assets/window_frame.svg"
@@ -70,6 +71,43 @@ const windows = [
             )
           )}
         </section>
+
+        <footer class="siteFooter" aria-label="Credits">
+          <div class="footerShell">
+            <img
+              src="/assets/footer_truck.png"
+              alt=""
+              class="footerTruck"
+              loading="eager"
+              decoding="async"
+            />
+
+            <img
+              src="/assets/footer_rotate.svg"
+              alt=""
+              class="footerRotate"
+              aria-hidden="true"
+              loading="eager"
+              decoding="async"
+            />
+
+            <a
+              href="https://lauren-taylor-design.com/"
+              target="_blank"
+              rel="noopener noreferrer"
+              class="footerLink linkLauren"
+              aria-label="Lauren Taylor Website"
+            ></a>
+
+            <a
+              href="https://rickycatto.com/"
+              target="_blank"
+              rel="noopener noreferrer"
+              class="footerLink linkRicky"
+              aria-label="Ricky Catto Website"
+            ></a>
+          </div>
+        </footer>
       </main>
     </BrickWall>
   </body>
@@ -104,9 +142,11 @@ const windows = [
     min-height: 100vh;
     width: 100%;
     display: flex;
+    flex-direction: column;
     align-items: center;
-    justify-content: center;
-    padding: 40px 20px;
+    justify-content: space-between;
+    padding: 40px 20px 0;
+    gap: 32px;
   }
 
   .windowGrid {
@@ -158,39 +198,86 @@ const windows = [
     z-index: 1;
   }
 
-  .windowTitle {
-    position: absolute;
-    inset: 0;
-    z-index: 2;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    padding: 1.25rem;
-    text-align: center;
-    pointer-events: none;
-  }
-
-  .windowTitle span {
-    color: #ffffff;
-    font-size: clamp(1.8rem, 4vw, 3rem);
-    font-weight: 800;
-    line-height: 0.95;
-    text-transform: uppercase;
-    letter-spacing: 0.02em;
-    text-shadow:
-      0 2px 8px rgba(0, 0, 0, 0.25),
-      0 0 1px rgba(0, 0, 0, 0.2);
-  }
-
   .windowFrame {
     z-index: 3;
     pointer-events: none;
   }
 
+  .siteFooter {
+    display: flex;
+    justify-content: center;
+    width: 100%;
+    margin-top: auto;
+  }
+
+  .footerShell {
+    position: relative;
+    width: min(720px, 95vw);
+    line-height: 0;
+  }
+
+  .footerTruck {
+    display: block;
+    width: 100%;
+    height: auto;
+  }
+
+  .footerRotate {
+    position: absolute;
+    left: 74%;
+    top: 50%;
+    width: 20%;
+    height: auto;
+    transform-origin: center center;
+    animation: spinTruck 28s linear infinite;
+    pointer-events: none;
+  }
+
+  @keyframes spinTruck {
+    from {
+      transform: rotate(0deg);
+    }
+    to {
+      transform: rotate(360deg);
+    }
+  }
+
+  .footerLink {
+    position: absolute;
+    display: block;
+  }
+
+  .linkLauren {
+    left: 37%;
+    top: 60%;
+    width: 26%;
+    height: 11%;
+    transform: translateY(30px);
+  }
+
+  .linkRicky {
+    left: 37%;
+    top: 70%;
+    width: 26%;
+    height: 11%;
+    transform: translateY(30px);
+  }
+
+  .footerLink:hover {
+    cursor: pointer;
+  }
+
+  /* uncomment to test click areas
+  .footerLink:hover {
+    outline: 2px dashed white;
+  }
+  */
+
   @media (max-width: 900px) {
     .home {
-      padding: 28px 16px 36px;
-      align-items: start;
+      padding: 28px 16px 0;
+      justify-content: flex-start;
+      gap: 24px;
     }
 
     .windowGrid {
@@ -201,6 +288,15 @@ const windows = [
 
     .windowShell {
       width: min(100%, 320px);
+    }
+
+    .siteFooter {
+      margin-top: 8px;
+      width: 100%;
+    }
+
+    .footerShell {
+      width: min(520px, 95vw);
     }
   }
 </style>
