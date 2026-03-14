@@ -14,9 +14,8 @@ type Artist = {
   thumbs: string;
 };
 
-const artists = rawArtists as Artist[];
-
 export async function getStaticPaths() {
+  const artists = rawArtists as Artist[];
 
   const sortedArtists = [...artists].sort((a, b) => {
     if (Number(a.studioNumber) !== Number(b.studioNumber)) {
