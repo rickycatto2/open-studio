@@ -18,293 +18,516 @@ const windows = [
 ---
 
 <html lang="en">
-<head>
-<meta charset="utf-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>Livestock Exchange Open Studios | Spring 2026</title>
-</head>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Livestock Exchange Open Studios | Spring 2026</title>
+    <meta name="description" content="Open Studios home page." />
+  </head>
 
-<body>
+  <body>
+    <div class="pageShell">
+      <div class="wallDecor" aria-hidden="true">
+        <div class="darkPattern"></div>
 
-<div class="brickOverlay">
-
-  <div class="darkStream streamA"></div>
-  <div class="darkStream streamB"></div>
-  <div class="darkStream streamC"></div>
-  <div class="darkStream streamD"></div>
-  <div class="darkStream streamE"></div>
-  <div class="darkStream streamF"></div>
-  <div class="darkStream streamG"></div>
-
-  <div class="eyeBrick eyeBrickOne">
-    <div class="eye left-eye eye-a"><div class="pupil pupil-a"></div></div>
-    <div class="eye right-eye eye-b"><div class="pupil pupil-b"></div></div>
-  </div>
-
-  <div class="eyeBrick eyeBrickTwo">
-    <div class="eye left-eye eye-c"><div class="pupil pupil-c"></div></div>
-    <div class="eye right-eye eye-d"><div class="pupil pupil-d"></div></div>
-  </div>
-
-</div>
-
-<div class="pageShell">
-
-<main class="home">
-
-<section class="windowGrid">
-
-{windows.map((w) =>
-  w.isStatic ? (
-    <div class="windowTile">
-      <div class="windowShell">
-        <img src={w.bg} class="windowLayer windowBackground" />
-        <img src="/assets/window_frame.svg" class="windowLayer windowFrame" />
+        <div class="eyeBrick eyeBrickOne">
+          <div class="eye left-eye blink-a">
+            <div class="pupil look-a"></div>
+          </div>
+          <div class="eye right-eye blink-b">
+            <div class="pupil look-b"></div>
+          </div>
+        </div>
       </div>
+
+      <main class="home">
+        <section class="windowGrid" aria-label="Site sections">
+          {windows.map((w) =>
+            w.isStatic ? (
+              <div class="windowTile windowTileStatic" aria-hidden="true">
+                <div class="windowShell">
+                  <img
+                    src={w.bg}
+                    alt=""
+                    class="windowLayer windowBackground"
+                    loading="eager"
+                    decoding="async"
+                  />
+                  <img
+                    src="/assets/window_frame.svg"
+                    alt=""
+                    class="windowLayer windowFrame"
+                    loading="eager"
+                    decoding="async"
+                  />
+                </div>
+              </div>
+            ) : (
+              <a class="windowTile windowLink" href={w.href} aria-label={w.title}>
+                <div class="windowShell">
+                  <img
+                    src={w.bg}
+                    alt=""
+                    class="windowLayer windowBackground"
+                    loading="eager"
+                    decoding="async"
+                  />
+                  <img
+                    src="/assets/window_frame.svg"
+                    alt=""
+                    class="windowLayer windowFrame"
+                    loading="eager"
+                    decoding="async"
+                  />
+                </div>
+              </a>
+            )
+          )}
+        </section>
+
+        <footer class="siteFooter" aria-label="Credits">
+          <div class="footerShell">
+            <img
+              src="/assets/footer_truck.png"
+              alt=""
+              class="footerTruck"
+              loading="eager"
+              decoding="async"
+            />
+
+            <img
+              src="/assets/footer_rotate.svg"
+              alt=""
+              class="footerRotate"
+              aria-hidden="true"
+              loading="eager"
+              decoding="async"
+            />
+
+            <a
+              href="https://lauren-taylor-design.com/"
+              target="_blank"
+              rel="noopener noreferrer"
+              class="footerLink linkLauren"
+              aria-label="Lauren Taylor Website"
+            ></a>
+
+            <a
+              href="https://rickycatto.com/"
+              target="_blank"
+              rel="noopener noreferrer"
+              class="footerLink linkRicky"
+              aria-label="Ricky Catto Website"
+            ></a>
+          </div>
+        </footer>
+      </main>
     </div>
-  ) : (
-    <a class="windowTile windowLink" href={w.href}>
-      <div class="windowShell">
-        <img src={w.bg} class="windowLayer windowBackground" />
-        <img src="/assets/window_frame.svg" class="windowLayer windowFrame" />
-      </div>
-    </a>
-  )
-)}
-
-</section>
-
-<footer class="siteFooter">
-
-<div class="footerShell">
-
-<img src="/assets/footer_truck.png" class="footerTruck"/>
-
-<img src="/assets/footer_rotate.svg" class="footerRotate"/>
-
-<a href="https://lauren-taylor-design.com/" class="footerLink linkLauren"></a>
-
-<a href="https://rickycatto.com/" class="footerLink linkRicky"></a>
-
-</div>
-
-</footer>
-
-</main>
-</div>
-
-</body>
+  </body>
 </html>
 
 <style>
+  :global(*) {
+    box-sizing: border-box;
+  }
 
-body{
---brick-w:120px;
---brick-h:80px;
+  :global(html, body) {
+    margin: 0;
+    padding: 0;
+    min-height: 100%;
+    font-family: Arial, Helvetica, sans-serif;
+  }
 
-margin:0;
-background:url("/assets/brick-base.svg") repeat;
-background-size:var(--brick-w) auto;
-background-color:#c44b3c;
-}
+  body {
+    --brick-w: 120px;
+    --brick-h: 80px;
 
-.brickOverlay{
-position:absolute;
-inset:0;
-pointer-events:none;
-z-index:1;
-}
+    margin: 0;
+    min-height: 100vh;
+    background-image: url("/assets/brick-base.svg");
+    background-repeat: repeat;
+    background-size: var(--brick-w) auto;
+    background-position: top left;
+    background-color: #c44b3c;
+  }
 
-.darkStream{
-position:absolute;
-top:0;
-bottom:0;
-width:var(--brick-w);
-background:url("/assets/dark-brick.svg") repeat-y;
-background-size:var(--brick-w) var(--brick-h);
-}
+  :global(img) {
+    max-width: 100%;
+  }
 
-/* staggered brick streams */
+  .pageShell {
+    position: relative;
+    z-index: 1;
+    width: 100%;
+    min-height: 100vh;
+    padding: 28px 16px 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
 
-.streamA{left:calc(2*var(--brick-w));background-position:0 calc(1*var(--brick-h));}
-.streamB{left:calc(4*var(--brick-w));background-position:0 calc(4*var(--brick-h));}
-.streamC{left:calc(5*var(--brick-w));background-position:0 calc(2*var(--brick-h));}
-.streamD{left:calc(7*var(--brick-w));background-position:0 calc(6*var(--brick-h));}
-.streamE{left:calc(9*var(--brick-w));background-position:0 calc(3*var(--brick-h));}
-.streamF{left:calc(11*var(--brick-w));background-position:0 calc(5*var(--brick-h));}
-.streamG{left:calc(13*var(--brick-w));background-position:0 calc(1*var(--brick-h));}
+  .wallDecor {
+    position: absolute;
+    inset: 0;
+    z-index: 1;
+    pointer-events: none;
+    overflow: hidden;
+  }
 
-/* eye bricks */
+  .darkPattern {
+    position: absolute;
+    inset: 0;
+    background-image:
+      url("/assets/dark-brick.svg"),
+      url("/assets/dark-brick.svg"),
+      url("/assets/dark-brick.svg"),
+      url("/assets/dark-brick.svg"),
+      url("/assets/dark-brick.svg"),
+      url("/assets/dark-brick.svg"),
+      url("/assets/dark-brick.svg"),
+      url("/assets/dark-brick.svg"),
+      url("/assets/dark-brick.svg"),
+      url("/assets/dark-brick.svg"),
+      url("/assets/dark-brick.svg"),
+      url("/assets/dark-brick.svg"),
+      url("/assets/dark-brick.svg"),
+      url("/assets/dark-brick.svg");
+    background-repeat:
+      no-repeat,
+      no-repeat,
+      no-repeat,
+      no-repeat,
+      no-repeat,
+      no-repeat,
+      no-repeat,
+      no-repeat,
+      no-repeat,
+      no-repeat,
+      no-repeat,
+      no-repeat,
+      no-repeat,
+      no-repeat;
+    background-size:
+      var(--brick-w) var(--brick-h),
+      var(--brick-w) var(--brick-h),
+      var(--brick-w) var(--brick-h),
+      var(--brick-w) var(--brick-h),
+      var(--brick-w) var(--brick-h),
+      var(--brick-w) var(--brick-h),
+      var(--brick-w) var(--brick-h),
+      var(--brick-w) var(--brick-h),
+      var(--brick-w) var(--brick-h),
+      var(--brick-w) var(--brick-h),
+      var(--brick-w) var(--brick-h),
+      var(--brick-w) var(--brick-h),
+      var(--brick-w) var(--brick-h),
+      var(--brick-w) var(--brick-h);
+    background-position:
+      calc(2 * var(--brick-w))  calc(0 * var(--brick-h)),
+      calc(5 * var(--brick-w))  calc(2 * var(--brick-h)),
+      calc(8 * var(--brick-w))  calc(1 * var(--brick-h)),
+      calc(11 * var(--brick-w)) calc(3 * var(--brick-h)),
+      calc(1 * var(--brick-w))  calc(6 * var(--brick-h)),
+      calc(4 * var(--brick-w))  calc(8 * var(--brick-h)),
+      calc(9 * var(--brick-w))  calc(7 * var(--brick-h)),
+      calc(12 * var(--brick-w)) calc(9 * var(--brick-h)),
+      calc(3 * var(--brick-w))  calc(12 * var(--brick-h)),
+      calc(7 * var(--brick-w))  calc(14 * var(--brick-h)),
+      calc(10 * var(--brick-w)) calc(13 * var(--brick-h)),
+      calc(0 * var(--brick-w))  calc(16 * var(--brick-h)),
+      calc(6 * var(--brick-w))  calc(18 * var(--brick-h)),
+      calc(11 * var(--brick-w)) calc(20 * var(--brick-h));
+  }
 
-.eyeBrick{
-position:absolute;
-width:var(--brick-w);
-height:var(--brick-h);
-background:url("/assets/dark-brick.svg") no-repeat;
-background-size:100% 100%;
-z-index:2;
-overflow:hidden;
-}
+  .eyeBrick {
+    position: absolute;
+    width: var(--brick-w);
+    height: var(--brick-h);
+    background-image: url("/assets/dark-brick.svg");
+    background-repeat: no-repeat;
+    background-size: 100% 100%;
+    overflow: hidden;
+    z-index: 2;
+  }
 
-.eyeBrickOne{
-left:calc(0*var(--brick-w));
-top:calc(3*var(--brick-h));
-}
+  .eyeBrickOne {
+    left: calc(0 * var(--brick-w));
+    top: calc(4 * var(--brick-h));
+  }
 
-.eyeBrickTwo{
-left:calc(8*var(--brick-w));
-top:calc(4*var(--brick-h));
-}
+  .eye {
+    position: absolute;
+    top: 8px;
+    width: 23px;
+    height: 23px;
+    border-radius: 50%;
+    background: #ef654e;
+    overflow: hidden;
+    transform-origin: center center;
+  }
 
-/* eyes */
+  .left-eye {
+    left: 10px;
+  }
 
-.eye{
-position:absolute;
-top:8px;
-width:23px;
-height:23px;
-border-radius:50%;
-background:#ef654e;
-overflow:hidden;
-}
+  .right-eye {
+    left: 52px;
+  }
 
-.left-eye{left:10px;}
-.right-eye{left:52px;}
+  .pupil {
+    position: absolute;
+    left: 6px;
+    top: 6px;
+    width: 11px;
+    height: 11px;
+    border-radius: 50%;
+    background: #8e382d;
+  }
 
-.pupil{
-position:absolute;
-left:8px;
-top:8px;
-width:11px;
-height:11px;
-border-radius:50%;
-background:#8e382d;
-}
+  @keyframes blinkA {
+    0%, 46%, 48%, 84%, 86%, 100% { transform: scaleY(1); }
+    47%, 85% { transform: scaleY(0.08); }
+  }
 
-/* blink */
+  @keyframes blinkB {
+    0%, 28%, 30%, 72%, 74%, 100% { transform: scaleY(1); }
+    29%, 73% { transform: scaleY(0.08); }
+  }
 
-@keyframes blink{
-0%,48%,50%,100%{transform:scaleY(1)}
-49%{transform:scaleY(.1)}
-}
+  @keyframes lookA {
+    0%, 10%, 24%, 40%, 58%, 76%, 100% { transform: translate(0, 0); }
+    14%, 20% { transform: translate(5px, -1px); }
+    46%, 54% { transform: translate(-5px, 1px); }
+    82%, 90% { transform: translate(3px, 1px); }
+  }
 
-.eye-a,.eye-c{animation:blink 9s infinite;}
-.eye-b,.eye-d{animation:blink 11s infinite;}
+  @keyframes lookB {
+    0%, 12%, 26%, 44%, 60%, 78%, 100% { transform: translate(0, 0); }
+    16%, 22% { transform: translate(-5px, 0); }
+    50%, 56% { transform: translate(4px, 2px); }
+    84%, 90% { transform: translate(1px, -2px); }
+  }
 
-.pageShell{
-position:relative;
-z-index:5;
-display:flex;
-justify-content:center;
-padding:30px;
-}
+  .blink-a { animation: blinkA 8.8s infinite; }
+  .blink-b { animation: blinkB 11.1s infinite; }
 
-.home{
-max-width:1120px;
-width:100%;
-display:flex;
-flex-direction:column;
-gap:30px;
-}
+  .look-a { animation: lookA 6.8s infinite ease-in-out; }
+  .look-b { animation: lookB 7.5s infinite ease-in-out; }
 
-.windowGrid{
-display:grid;
-grid-template-columns:repeat(3,1fr);
-gap:28px;
-}
+  .home {
+    position: relative;
+    z-index: 5;
+    min-height: 100vh;
+    width: 100%;
+    max-width: 1120px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-between;
+    gap: 32px;
+  }
 
-.windowShell{
-position:relative;
-aspect-ratio:270.782/377.165;
-}
+  .windowGrid {
+    width: 100%;
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 28px 24px;
+    justify-items: center;
+    align-items: center;
+  }
 
-.windowLayer{
-position:absolute;
-inset:0;
-width:100%;
-height:100%;
-}
+  .windowTile {
+    display: flex;
+    justify-content: center;
+    width: 100%;
+  }
 
-.windowFrame{z-index:3;}
+  .windowLink {
+    text-decoration: none;
+    transition: transform 160ms ease;
+  }
 
-.siteFooter{
-display:flex;
-justify-content:center;
-}
+  .windowLink:hover {
+    transform: translateY(-4px);
+  }
 
-.footerShell{
-position:relative;
-width:min(720px,95vw);
-}
+  .windowShell {
+    position: relative;
+    width: min(100%, 320px);
+    aspect-ratio: 270.782 / 377.165;
+  }
 
-.footerRotate{
-position:absolute;
-left:74%;
-top:50%;
-width:20%;
-animation:spinTruck 28s linear infinite;
-}
+  .windowLayer {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+  }
 
-@keyframes spinTruck{
-from{transform:rotate(0deg)}
-to{transform:rotate(360deg)}
-}
+  .windowBackground {
+    z-index: 1;
+  }
 
-.linkLauren{
-position:absolute;
-left:37%;
-top:60%;
-width:26%;
-height:11%;
-}
+  .windowFrame {
+    z-index: 3;
+    pointer-events: none;
+  }
 
-.linkRicky{
-position:absolute;
-left:37%;
-top:70%;
-width:26%;
-height:11%;
-}
+  .siteFooter {
+    display: flex;
+    justify-content: center;
+    width: 100%;
+    margin-top: auto;
+  }
 
-@media(max-width:900px){
+  .footerShell {
+    position: relative;
+    width: min(720px, 95vw);
+    line-height: 0;
+  }
 
-.windowGrid{
-grid-template-columns:1fr;
-width:340px;
-}
+  .footerTruck {
+    display: block;
+    width: 100%;
+    height: auto;
+  }
 
-.streamA{left:calc(1*var(--brick-w))}
-.streamB{left:calc(2*var(--brick-w))}
-.streamC{left:calc(3*var(--brick-w))}
-.streamD{left:calc(4*var(--brick-w))}
-.streamE{left:calc(0*var(--brick-w))}
-.streamF,.streamG{display:none}
+  .footerRotate {
+    position: absolute;
+    left: 74%;
+    top: 50%;
+    width: 20%;
+    height: auto;
+    transform-origin: center center;
+    animation: spinTruck 28s linear infinite;
+    pointer-events: none;
+  }
 
-}
+  @keyframes spinTruck {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(360deg); }
+  }
 
-@media(max-width:720px){
+  .footerLink {
+    position: absolute;
+    display: block;
+  }
 
-body{
---brick-w:92px;
---brick-h:61.3333px;
-}
+  .linkLauren {
+    left: 37%;
+    top: 60%;
+    width: 26%;
+    height: 11%;
+    transform: translateY(30px);
+  }
 
-.eye{
-top:6px;
-width:18px;
-height:18px;
-}
+  .linkRicky {
+    left: 37%;
+    top: 70%;
+    width: 26%;
+    height: 11%;
+    transform: translateY(30px);
+  }
 
-.left-eye{left:7px}
-.right-eye{left:34px}
+  .footerLink:hover {
+    cursor: pointer;
+  }
 
-.pupil{
-left:6px;
-top:6px;
-width:9px;
-height:9px;
-}
+  @media (min-width: 720px) {
+    .pageShell {
+      padding: 36px 24px 0;
+    }
+  }
 
-}
+  @media (max-width: 900px) {
+    .home {
+      gap: 24px;
+    }
 
+    .windowGrid {
+      width: min(340px, 100%);
+      grid-template-columns: 1fr;
+      gap: 24px;
+    }
+
+    .footerShell {
+      width: min(520px, 95vw);
+    }
+
+    .darkPattern {
+      background-image:
+        url("/assets/dark-brick.svg"),
+        url("/assets/dark-brick.svg"),
+        url("/assets/dark-brick.svg"),
+        url("/assets/dark-brick.svg"),
+        url("/assets/dark-brick.svg"),
+        url("/assets/dark-brick.svg"),
+        url("/assets/dark-brick.svg"),
+        url("/assets/dark-brick.svg");
+      background-repeat:
+        no-repeat,
+        no-repeat,
+        no-repeat,
+        no-repeat,
+        no-repeat,
+        no-repeat,
+        no-repeat,
+        no-repeat;
+      background-size:
+        var(--brick-w) var(--brick-h),
+        var(--brick-w) var(--brick-h),
+        var(--brick-w) var(--brick-h),
+        var(--brick-w) var(--brick-h),
+        var(--brick-w) var(--brick-h),
+        var(--brick-w) var(--brick-h),
+        var(--brick-w) var(--brick-h),
+        var(--brick-w) var(--brick-h);
+      background-position:
+        calc(1 * var(--brick-w)) calc(0 * var(--brick-h)),
+        calc(3 * var(--brick-w)) calc(2 * var(--brick-h)),
+        calc(0 * var(--brick-w)) calc(7 * var(--brick-h)),
+        calc(4 * var(--brick-w)) calc(9 * var(--brick-h)),
+        calc(2 * var(--brick-w)) calc(11 * var(--brick-h)),
+        calc(1 * var(--brick-w)) calc(15 * var(--brick-h)),
+        calc(3 * var(--brick-w)) calc(18 * var(--brick-h)),
+        calc(0 * var(--brick-w)) calc(21 * var(--brick-h));
+    }
+
+    .eyeBrickOne {
+      left: calc(0 * var(--brick-w));
+      top: calc(4 * var(--brick-h));
+    }
+  }
+
+  @media (max-width: 720px) {
+    body {
+      --brick-w: 92px;
+      --brick-h: 61.3333px;
+    }
+
+    .pageShell {
+      padding: 18px 12px 0;
+    }
+
+    .eye {
+      top: 6px;
+      width: 18px;
+      height: 18px;
+    }
+
+    .left-eye {
+      left: 7px;
+    }
+
+    .right-eye {
+      left: 34px;
+    }
+
+    .pupil {
+      left: 4px;
+      top: 4px;
+      width: 9px;
+      height: 9px;
+    }
+  }
 </style>
