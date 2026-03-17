@@ -15,7 +15,7 @@ const sponsors = [
   { name: "George Interiors", url: "https://georgeterbovichdesign.com/" },
   {
     name: "Blick Art Materials",
-    url: "https://www.dickblick.com/stores/missouri/kansas-city/?srsltid=AfmBOoqDWPcC0T36-GNzaSJEDpogF4eM67L3cmtLQWSQal3pxnNh-BTl"
+    url: "https://www.dickblick.com/stores/missouri/kansas-city/"
   },
   { name: "Josh Dampf Events", url: "https://www.joshdampf.com/" },
   { name: "Design Spout", url: "https://design-spout.com/" },
@@ -28,6 +28,9 @@ const sponsors = [
   { name: "Regina Kort" },
   { name: "Trilling Family in memory of Gerry Trilling" }
 ];
+
+const linkedSponsors = sponsors.filter((sponsor) => sponsor.url);
+const unlinkedSponsors = sponsors.filter((sponsor) => !sponsor.url);
 ---
 
 <html lang="en">
@@ -131,29 +134,29 @@ const sponsors = [
           </section>
 
           <section class="infoSection sponsorsSection">
-            <div class="sectionBanner">
-              <h2>Sponsors</h2>
-            </div>
+  <div class="sectionBanner">
+    <h2>Sponsors</h2>
+  </div>
 
-            <div class="sponsorGrid">
-              {sponsors.map((sponsor) =>
-                sponsor.url ? (
-                  <a
-                    class="sponsorCard sponsorLink"
-                    href={sponsor.url}
-                    target="_blank"
-                    rel="noreferrer"
-                  >
-                    <span>{sponsor.name}</span>
-                  </a>
-                ) : (
-                  <div class="sponsorCard sponsorStatic">
-                    <span>{sponsor.name}</span>
-                  </div>
-                )
-              )}
-            </div>
-          </section>
+  <div class="sponsorGrid">
+    {linkedSponsors.map((sponsor) => (
+      <a
+        class="sponsorCard sponsorLink"
+        href={sponsor.url}
+        target="_blank"
+        rel="noreferrer"
+      >
+        <span>{sponsor.name}</span>
+      </a>
+    ))}
+
+    {unlinkedSponsors.map((sponsor) => (
+      <div class="sponsorCard sponsorStatic">
+        <span>{sponsor.name}</span>
+      </div>
+    ))}
+  </div>
+</section>
         </div>
       </main>
     </div>
