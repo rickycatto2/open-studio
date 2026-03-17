@@ -1,28 +1,506 @@
 ---
-import BaseLayout from "../layouts/BaseLayout.astro";
+const eventAddress = "Livestock Exchange - 1600 Genessee St, Kansas City, MO 64102";
+const appleMapsEventLink =
+  "https://maps.apple.com/?q=1600+Genessee+St,+Kansas+City,+MO+64102";
 ---
 
-<BaseLayout title="Parking • Open Studios">
-  <div class="card">
-    <h2 style="margin-top:0">Parking</h2>
-    <p>Drop in your real embed later. For now, this is a placeholder map section.</p>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Parking | Open Studios</title>
+    <meta
+      name="description"
+      content="Parking and arrival information for Open Studios at 1600 Genessee St, Kansas City, MO 64102."
+    />
+  </head>
 
-    <div style="border-radius:16px; overflow:hidden; border:1px solid rgba(17,24,39,0.12)">
-      <iframe
-        title="Map placeholder"
-        width="100%"
-        height="360"
-        style="border:0"
-        loading="lazy"
-        referrerpolicy="no-referrer-when-downgrade"
-        src="https://www.google.com/maps?q=Kansas%20City%20MO&output=embed">
-      </iframe>
-    </div>
+  <body>
+    <div class="pageShell">
+      <div class="navRow">
+        <a href="/" class="backButton">← Home</a>
+      </div>
 
-    <ul>
-      <li>Tip: best lot after 5pm</li>
-      <li>Tip: accessible entrance location</li>
-      <li>Tip: bike parking spot</li>
-    </ul>
+      <main class="poster">
+        <header class="posterHeader">
+          <p class="eyebrow">Open Studios</p>
+          <h1>Parking &amp; Getting Here</h1>
+          <p class="subtitle">
+            Parking is available nearby. Please respect posted signs.
+          </p>
+
+          <div class="heroAddress">
+            <span class="heroLabel">Event Address</span>
+            <p>{eventAddress}</p>
+
+            <div class="heroMapButtons">
+              <a
+                href="https://maps.app.goo.gl/MsCF7KGXPA7Q4zn87"
+                class="mapLink"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                Google Maps
+              </a>
+
+              <a
+                href={appleMapsEventLink}
+                class="mapLink apple"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                Apple Maps
+              </a>
+            </div>
+          </div>
+        </header>
+
+        <section class="posterBody">
+          <section class="sectionBlock">
+            <h2>Parking Options</h2>
+
+            <div class="parkingGrid">
+              <article class="parkingCard">
+                <div class="cardTop">
+                  <span class="cardTag">Option 1</span>
+                  <h3>Free Street Parking</h3>
+                </div>
+
+                <p class="cardText">
+                  Free street parking is available in the surrounding area. Please check posted signs
+                  and avoid blocking driveways, gates, or access points. Limited parking behind the Livestock Exchange building.
+                </p>
+
+                <div class="cardButtons">
+                  <a
+                    href="https://maps.app.goo.gl/MsCF7KGXPA7Q4zn87"
+                    class="mapLink"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
+                    Google Maps
+                  </a>
+
+                  <a
+                    href={appleMapsEventLink}
+                    class="mapLink apple"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
+                    Apple Maps
+                  </a>
+                </div>
+              </article>
+
+              <article class="parkingCard">
+                <div class="cardTop">
+                  <span class="cardTag">Option 2</span>
+                  <h3>Free Parking Lot</h3>
+                </div>
+
+                <p class="cardText">
+                  Free lot parking is available on a first come, first served basis.
+                </p>
+
+                <div class="cardButtons">
+                  <a
+                    href="https://maps.app.goo.gl/MsCF7KGXPA7Q4zn87"
+                    class="mapLink"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
+                    Google Maps
+                  </a>
+
+                  <a
+                    href={appleMapsEventLink}
+                    class="mapLink apple"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
+                    Apple Maps
+                  </a>
+                </div>
+              </article>
+
+              <article class="parkingCard">
+                <div class="cardTop">
+                  <span class="cardTag">Option 3</span>
+                  <h3>Paid Parking Lot</h3>
+                </div>
+
+                <p class="cardText">
+                  A paid parking lot is also available nearby if the free options are full.
+                </p>
+
+                <div class="cardButtons">
+                  <a
+                    href="https://maps.app.goo.gl/Z3m4mh8wbJTR8cN69"
+                    class="mapLink"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
+                    Google Maps
+                  </a>
+
+                  <a
+                    href={appleMapsEventLink}
+                    class="mapLink apple"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
+                    Apple Maps
+                  </a>
+                </div>
+              </article>
+            </div>
+          </section>
+
+          <section class="sectionBlock">
+            <h2>Arrival Notes</h2>
+            <div class="infoCard">
+              <p>
+                Please allow a little extra time to park and walk to the building, especially during
+                busy event hours. Other events may be happening at Hy-Vee Arena and Rock Island Bridge.
+              </p>
+            </div>
+          </section>
+
+          <section class="sectionBlock">
+  <h2>Parking Map</h2>
+
+  <div class="mapImageWrap">
+    <img
+      src="/assets/parking.png"
+      alt="Parking map for Open Studios at the Livestock Exchange building"
+      class="parkingMap"
+    />
   </div>
-</BaseLayout>
+
+</section>
+        </section>
+      </main>
+    </div>
+  </body>
+</html>
+
+<style>
+  :global(*) {
+    box-sizing: border-box;
+  }
+
+  :global(html, body) {
+    margin: 0;
+    padding: 0;
+    min-height: 100%;
+    font-family: Arial, Helvetica, sans-serif;
+    color: #1f1a17;
+  }
+
+  body {
+    min-height: 100vh;
+    background-image: url("/assets/brick-base.svg");
+    background-repeat: repeat;
+    background-size: 120px auto;
+    background-color: #c44b3c;
+  }
+
+  .pageShell {
+    width: 100%;
+    min-height: 100vh;
+    padding: 28px 16px 56px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .navRow {
+    width: min(100%, 880px);
+    margin-bottom: 12px;
+    display: flex;
+    justify-content: flex-start;
+  }
+
+  .backButton {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 10px 16px;
+    border-radius: 999px;
+    background: rgba(255, 244, 184, 0.96);
+    color: #1f1a17;
+    text-decoration: none;
+    font-weight: 700;
+    font-size: 0.95rem;
+    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.18);
+    transition: transform 0.18s ease, box-shadow 0.18s ease, background 0.18s ease;
+  }
+
+  .backButton:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 10px 18px rgba(0, 0, 0, 0.2);
+    background: #fff2a8;
+  }
+
+  .poster {
+    width: min(100%, 880px);
+    background: rgba(255, 249, 240, 0.97);
+    border-radius: 28px;
+    overflow: hidden;
+    box-shadow:
+      0 18px 40px rgba(0, 0, 0, 0.24),
+      inset 0 0 0 2px rgba(255, 255, 255, 0.35);
+  }
+
+  .posterHeader {
+    background: #f4cf45;
+    padding: 26px 22px 24px;
+    border-bottom: 2px solid rgba(31, 26, 23, 0.12);
+  }
+
+  .eyebrow {
+    margin: 0 0 10px;
+    font-size: 0.82rem;
+    font-weight: 800;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    opacity: 0.75;
+  }
+
+  h1 {
+    margin: 0;
+    font-size: clamp(2rem, 4vw, 3.2rem);
+    line-height: 0.95;
+    letter-spacing: -0.03em;
+  }
+
+  .subtitle {
+    margin: 14px 0 0;
+    max-width: 40rem;
+    font-size: 1rem;
+    line-height: 1.55;
+  }
+
+  .heroAddress {
+    margin-top: 20px;
+    padding: 16px 18px;
+    background: rgba(255, 250, 232, 0.82);
+    border-radius: 18px;
+    border: 2px solid rgba(31, 26, 23, 0.1);
+  }
+
+  .heroLabel {
+    display: inline-block;
+    margin-bottom: 8px;
+    font-size: 0.78rem;
+    font-weight: 800;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    opacity: 0.7;
+  }
+
+  .heroAddress p {
+    margin: 0;
+    font-size: 1.05rem;
+    font-weight: 700;
+    line-height: 1.4;
+  }
+
+  .heroMapButtons {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-top: 14px;
+  }
+
+  .posterBody {
+    padding: 22px;
+    display: grid;
+    gap: 18px;
+  }
+
+  .sectionBlock {
+    display: grid;
+    gap: 14px;
+  }
+
+  h2 {
+    margin: 0;
+    font-size: 1.2rem;
+    line-height: 1.1;
+  }
+
+  .parkingGrid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 14px;
+  }
+
+  .parkingCard,
+  .infoCard,
+  .mapPlaceholder {
+    background: #fffdf9;
+    border: 2px solid rgba(31, 26, 23, 0.08);
+    border-radius: 20px;
+    box-shadow: 0 8px 18px rgba(0, 0, 0, 0.08);
+  }
+
+  .parkingCard {
+    padding: 18px;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .cardTop {
+    display: grid;
+    gap: 8px;
+    margin-bottom: 10px;
+  }
+
+  .cardTag {
+    width: fit-content;
+    display: inline-flex;
+    align-items: center;
+    padding: 6px 10px;
+    border-radius: 999px;
+    background: #f05545;
+    color: white;
+    font-size: 0.78rem;
+    font-weight: 800;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+  }
+
+  h3 {
+    margin: 0;
+    font-size: 1.15rem;
+    line-height: 1.2;
+  }
+
+  .cardText,
+  .infoCard p,
+  .mapPlaceholder p {
+    margin: 0;
+    font-size: 0.98rem;
+    line-height: 1.6;
+  }
+
+  .cardButtons {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-top: 14px;
+  }
+
+  .mapLink {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 10px 14px;
+    border-radius: 12px;
+    background: #f05545;
+    color: white;
+    text-decoration: none;
+    font-weight: 700;
+    font-size: 0.95rem;
+    transition: transform 0.18s ease, opacity 0.18s ease;
+  }
+
+  .mapLink.apple {
+    background: #1f1a17;
+  }
+
+  .mapLink:hover {
+    transform: translateY(-1px);
+    opacity: 0.92;
+  }
+
+  .infoCard {
+    padding: 18px;
+  }
+
+  .mapPlaceholder {
+    min-height: 180px;
+    display: grid;
+    place-items: center;
+    padding: 24px;
+    text-align: center;
+    border-style: dashed;
+  }
+
+  .mapPlaceholderInner {
+    display: grid;
+    gap: 10px;
+    max-width: 34rem;
+    color: rgba(31, 26, 23, 0.75);
+  }
+
+  .mapPlaceholderInner strong {
+    font-size: 1rem;
+    color: #1f1a17;
+  }
+
+  .mapImageWrap {
+  background: #fffdf9;
+  border: 2px solid rgba(31, 26, 23, 0.08);
+  border-radius: 20px;
+  padding: 12px;
+  box-shadow: 0 8px 18px rgba(0, 0, 0, 0.08);
+  display: flex;
+  justify-content: center;
+}
+
+.parkingMap {
+  width: 100%;
+  max-width: 720px;
+  height: auto;
+  display: block;
+  border-radius: 12px;
+}
+
+  @media (min-width: 720px) {
+    .pageShell {
+      padding: 36px 24px 72px;
+    }
+
+    .posterHeader {
+      padding: 34px 32px 28px;
+    }
+
+    .posterBody {
+      padding: 28px;
+    }
+
+    .parkingGrid {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      align-items: stretch;
+    }
+
+    .mapPlaceholder {
+      min-height: 240px;
+    }
+  }
+
+  @media (max-width: 520px) {
+    .pageShell {
+      padding-top: 18px;
+      padding-left: 12px;
+      padding-right: 12px;
+    }
+
+    .poster {
+      border-radius: 22px;
+    }
+
+    .posterHeader,
+    .posterBody {
+      padding-left: 16px;
+      padding-right: 16px;
+    }
+
+    .backButton {
+      font-size: 0.9rem;
+      padding: 9px 14px;
+    }
+  }
+</style>

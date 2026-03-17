@@ -1,16 +1,365 @@
 ---
-import BaseLayout from "../layouts/BaseLayout.astro";
+import entertainment from "../data/entertainment.json";
+
+const dayLabels = {
+  "2026-05-15T05:00:00.000Z": "Friday, May 15",
+  "2026-05-16T05:00:00.000Z": "Saturday, May 16"
+};
+
+const groupedEvents = Object.entries(
+  entertainment.reduce((acc, item) => {
+    const day = item.day;
+    if (!acc[day]) acc[day] = [];
+    acc[day].push(item);
+    return acc;
+  }, {})
+).map(([day, events]) => ({
+  day,
+  label: dayLabels[day] ?? day,
+  events: events.sort((a, b) => a.sortTime.localeCompare(b.sortTime))
+}));
 ---
 
-<BaseLayout title="Entertainment • Open Studios">
-  <div class="card">
-    <h2 style="margin-top:0">Entertainment</h2>
-    <p>Dummy schedule:</p>
-    <ul>
-      <li><strong>6:00 PM</strong> – DJ set in the lobby</li>
-      <li><strong>7:15 PM</strong> – Short live set (acoustic)</li>
-      <li><strong>8:30 PM</strong> – “Meet the Artists” toast</li>
-    </ul>
-    <p style="color:rgba(17,24,39,0.72)">Easy upgrade later: make this data-driven like artists.</p>
-  </div>
-</BaseLayout>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Entertainment Schedule</title>
+</head>
+
+<body>
+
+<main class="pageShell">
+
+<div class="topNav">
+<a class="backLink" href="/">← Home</a>
+</div>
+
+<section class="poster">
+
+<header class="posterHeader">
+<p class="eyebrow">Open Studios</p>
+<h1>Entertainment Schedule</h1>
+<p class="intro">
+Music, food, drinks, and wandering delights across the building.
+</p>
+</header>
+
+<div class="days">
+
+{groupedEvents.map((group) => (
+
+<section class="daySection">
+
+<div class="dayBanner">
+<h2>{group.label}</h2>
+</div>
+
+<div class="eventList">
+
+{group.events.map((event) => {
+
+const link = event.UNNAMED_F;
+const external = link?.startsWith("http");
+
+const Card = (
+<article class={`eventCard type-${event.type}`}>
+
+<div class="timeCol">
+<span class="time">{event.time}</span>
+</div>
+
+<div class="contentCol">
+<p class="eventType">{event.type}</p>
+<h3>{event.title}</h3>
+<p class="meta">{event.location}</p>
+
+{event.description && (
+<p class="description">{event.description}</p>
+)}
+
+</div>
+
+{event.logo && (
+<div class="logoCol">
+<img src={event.logo} alt={`${event.performer} logo`} />
+</div>
+)}
+
+</article>
+);
+
+return link ? (
+<a
+href={link}
+class="eventLinkWrap"
+target={external ? "_blank" : undefined}
+rel={external ? "noreferrer" : undefined}
+>
+{Card}
+</a>
+) : Card;
+
+})}
+
+</div>
+</section>
+))}
+
+</div>
+</section>
+</main>
+</body>
+</html>
+
+<style>
+
+:global(html, body){
+margin:0;
+padding:0;
+}
+
+:global(body){
+font-family: Arial, Helvetica, sans-serif;
+color:#132033;
+
+background-color:#f5ecd8;
+background-image:url("/assets/brick-base.svg");
+background-repeat:repeat;
+background-size:120px auto;
+background-position:top left;
+}
+
+.pageShell{
+min-height:100vh;
+display:flex;
+flex-direction:column;
+align-items:center;
+padding:1rem 1rem 4rem;
+box-sizing:border-box;
+
+background:linear-gradient(
+to bottom,
+rgba(255,248,220,0.16),
+rgba(255,248,220,0.08)
+);
+}
+
+.topNav{
+width:min(980px,100%);
+margin-bottom:0.75rem;
+}
+
+.backLink{
+display:inline-block;
+padding:0.55rem 0.9rem;
+
+color:#132033;
+background:rgba(255,248,220,0.9);
+
+border:3px solid #132033;
+border-radius:999px;
+
+text-decoration:none;
+font-size:0.95rem;
+font-weight:700;
+
+box-shadow:0 4px 0 rgba(19,32,51,0.18);
+}
+
+.backLink:hover{
+transform:translateY(1px);
+box-shadow:0 3px 0 rgba(19,32,51,0.18);
+}
+
+.poster{
+width:min(980px,100%);
+
+background:rgba(255,248,220,0.94);
+
+border:4px solid #132033;
+border-radius:28px;
+
+box-shadow:0 18px 50px rgba(0,0,0,0.18);
+overflow:hidden;
+}
+
+.posterHeader{
+padding:1.2rem 1.5rem 2rem;
+text-align:center;
+
+background:
+radial-gradient(circle at top, rgba(255,225,90,0.6), transparent 55%),
+linear-gradient(180deg,#ffe35c 0%,#ffd23a 100%);
+
+border-bottom:4px solid #132033;
+}
+
+.eyebrow{
+margin:0 0 0.5rem;
+font-size:0.85rem;
+font-weight:700;
+text-transform:uppercase;
+letter-spacing:0.14em;
+}
+
+.posterHeader h1{
+margin:0;
+font-size:clamp(2rem,4vw,4rem);
+line-height:0.95;
+text-transform:uppercase;
+}
+
+.intro{
+max-width:42rem;
+margin:1rem auto 0;
+font-size:1rem;
+line-height:1.5;
+}
+
+.days{
+padding:1.5rem;
+display:grid;
+gap:2rem;
+}
+
+.daySection{
+display:grid;
+gap:1rem;
+}
+
+.dayBanner{
+background:#132033;
+color:#fff7c7;
+
+padding:0.9rem 1.1rem;
+
+border-radius:18px;
+
+box-shadow:0 6px 0 #ffd23a;
+}
+
+.dayBanner h2{
+margin:0;
+font-size:clamp(1.25rem,2vw,1.9rem);
+text-transform:uppercase;
+}
+
+.eventList{
+display:grid;
+gap:1rem;
+}
+
+.eventLinkWrap{
+text-decoration:none;
+color:inherit;
+}
+
+.eventCard{
+display:grid;
+
+grid-template-columns:130px 1fr 200px;
+
+gap:1rem;
+align-items:center;
+
+padding:1rem;
+
+background:rgba(255,255,255,0.9);
+
+border:3px solid #132033;
+border-radius:22px;
+
+box-shadow:0 8px 0 rgba(19,32,51,0.12);
+
+transition:transform .12s ease, box-shadow .12s ease;
+}
+
+.eventLinkWrap:hover .eventCard{
+transform:translateY(-2px);
+box-shadow:0 10px 0 rgba(19,32,51,0.14);
+}
+
+.timeCol{
+display:flex;
+align-items:center;
+justify-content:center;
+
+background:#fff2a8;
+
+border:2px solid #132033;
+border-radius:16px;
+
+padding:0.75rem;
+text-align:center;
+}
+
+.time{
+font-weight:700;
+font-size:1rem;
+}
+
+.contentCol h3{
+margin:0;
+font-size:1.35rem;
+}
+
+.meta{
+margin:0.4rem 0 0;
+font-weight:700;
+}
+
+.description{
+margin:0.4rem 0 0;
+font-size:0.95rem;
+}
+
+.logoCol{
+width:200px;
+display:flex;
+justify-content:flex-start;
+align-items:flex-start;
+}
+
+.logoCol img{
+width:100%;
+max-width:200px;
+max-height:88px;
+object-fit:contain;
+display:block;
+}
+
+@media (max-width:720px){
+
+:global(body){
+background-size:92px auto;
+}
+
+.eventCard{
+grid-template-columns:1fr;
+}
+
+.logoCol{
+width:120px;
+}
+
+.logoCol img{
+max-width:120px;
+max-height:64px;
+}
+
+.eventLinkWrap,
+.eventLinkWrap:visited {
+  text-decoration: none;
+  color: inherit;
+}
+
+.eventLinkWrap:hover,
+.eventLinkWrap:focus-visible {
+  text-decoration: none;
+  color: inherit;
+}
+
+}
+
+</style>

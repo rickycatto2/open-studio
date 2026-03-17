@@ -1,0 +1,57 @@
+---
+interface Props {
+  class?: string;
+  brickSrc?: string;
+}
+
+const {
+  class: className = "",
+  brickSrc = "/assets/brick-base.svg"
+} = Astro.props;
+---
+
+<section class={`brickWallLite ${className}`} style={`--brick-src: url('${brickSrc}')`}>
+  <div class="brickWallLite__overlay"></div>
+  <div class="brickWallLite__content">
+    <slot />
+  </div>
+</section>
+
+<style>
+  .brickWallLite {
+    position: relative;
+    min-height: 100vh;
+    width: 100%;
+    overflow: hidden;
+    background-color: #f5ecd8;
+    background-image: var(--brick-src);
+    background-repeat: repeat;
+    background-size: 120px auto;
+    background-position: top left;
+  }
+
+  .brickWallLite__overlay {
+    position: absolute;
+    inset: 0;
+    background:
+      linear-gradient(
+        to bottom,
+        rgba(255, 248, 220, 0.18),
+        rgba(255, 248, 220, 0.08)
+      );
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  .brickWallLite__content {
+    position: relative;
+    z-index: 1;
+    min-height: 100vh;
+  }
+
+  @media (max-width: 720px) {
+    .brickWallLite {
+      background-size: 92px auto;
+    }
+  }
+</style>

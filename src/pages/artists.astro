@@ -1,5 +1,4 @@
 ---
-import BrickWall from "../components/BrickWall.astro";
 import rawArtists from "../data/artists.json";
 
 type Artist = {
@@ -8,9 +7,9 @@ type Artist = {
   studioNumber: number | string;
   display_name: string;
   social_label?: string;
-  website?: string;
+  website: string;
   art_type?: string;
-  image: string;
+  image?: string;
   thumbs: string;
 };
 
@@ -19,9 +18,8 @@ const artists = (rawArtists as Artist[])
     id: String(artist.id),
     displayName: artist.display_name?.trim() ?? "",
     additionalInfo: artist.additional_info?.trim() ?? "",
-    studioNumber: Number(artist.studioNumber),
+    studioNumber: String(artist.studioNumber ?? "").trim(),
     artType: artist.art_type?.replace(/\s+/g, " ").trim() ?? "",
-    image: artist.image,
     thumb: artist.thumbs,
     socialLabel: artist.social_label?.trim() ?? "",
     website: artist.website?.trim() ?? "",
@@ -37,9 +35,13 @@ const artists = (rawArtists as Artist[])
       .toLowerCase()
   }))
   .sort((a, b) => {
-    if (a.studioNumber !== b.studioNumber) {
-      return a.studioNumber - b.studioNumber;
+    const aNum = parseFloat(a.studioNumber);
+    const bNum = parseFloat(b.studioNumber);
+
+    if (!Number.isNaN(aNum) && !Number.isNaN(bNum) && aNum !== bNum) {
+      return aNum - bNum;
     }
+
     return a.displayName.localeCompare(b.displayName);
   });
 ---
@@ -49,14 +51,25 @@ const artists = (rawArtists as Artist[])
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>Artists • Open Studios</title>
+    <meta
+      name="description"
+      content="Browse participating artists for Open Studios."
+    />
   </head>
 
   <body>
-    <BrickWall cols={30} rows={100}>
-      <main class="artistsPage">
-        <header class="artistsHeader">
-          <a class="backLink" href="/">← Home</a>
+    <div class="pageShell">
+      <div class="navRow">
+        <a href="/" class="backButton">← Home</a>
+      </div>
+
+      <main class="poster">
+        <header class="posterHeader">
+          <p class="eyebrow">Open Studios</p>
           <h1>Artists</h1>
+          <p class="subtitle">
+            Browse the artists and click any card to visit their page.
+          </p>
 
           <div class="searchWrap">
             <label class="srOnly" for="artist-search">Search artists</label>
@@ -70,34 +83,54 @@ const artists = (rawArtists as Artist[])
           </div>
         </header>
 
-        <section class="artistGrid" id="artist-grid">
-          {artists.map((artist) => (
-            <a
-              class="artistCard"
-              href={`/artists/${artist.id}`}
-              data-search={artist.searchText}
-              aria-label={`${artist.displayName}, studio ${artist.studioNumber}`}
-            >
-              <div class="artistThumbWrap">
-                <img
-                  src={artist.thumb}
-                  alt={artist.displayName}
-                  class="artistThumb"
-                  loading="lazy"
-                  decoding="async"
-                />
+        <section class="posterBody">
+          <section class="artistGrid" id="artist-grid">
+            {artists.map((artist) => (
+              <a
+                class="artistCard"
+                href={artist.website}
+                data-search={artist.searchText}
+                aria-label={`${artist.displayName}, studio ${artist.studioNumber}`}
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                <div class="artistThumbWrap">
+                  <img
+                    src={artist.thumb}
+                    alt={artist.displayName}
+                    class="artistThumb"
+                    loading="lazy"
+                    decoding="async"
+                  />
 
-                <div class="artistInfo">
-                  <h2>{artist.displayName}</h2>
+                  <div class="artistInfo">
+                    <div class="artistLine artistLinePrimary">
+                      {artist.displayName} | {artist.studioNumber}
+                    </div>
+
+                    {artist.artType && (
+                      <div class="artistLine artistLineSecondary">
+                        {artist.artType}
+                      </div>
+                    )}
+
+                    {artist.socialLabel && (
+                      <div class="artistSocial">
+                        social: {artist.socialLabel}
+                      </div>
+                    )}
+                  </div>
                 </div>
-              </div>
-            </a>
-          ))}
-        </section>
+              </a>
+            ))}
+          </section>
 
-        <p class="noResults" id="no-results" hidden>No artists matched that search.</p>
+          <p class="noResults" id="no-results" hidden>
+            No artists matched that search.
+          </p>
+        </section>
       </main>
-    </BrickWall>
+    </div>
 
     <script is:inline>
       document.addEventListener("DOMContentLoaded", () => {
@@ -133,31 +166,108 @@ const artists = (rawArtists as Artist[])
   </body>
 </html>
 
-<style is:global>
-  html,
-  body {
-    margin: 0;
-    padding: 0;
-    min-height: 100%;
-  }
-
-  body {
-    background: #E4A8CB;
-    font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
-  }
-
-  *,
-  *::before,
-  *::after {
+<style>
+  :global(*) {
     box-sizing: border-box;
   }
 
-  img {
-    max-width: 100%;
+  :global(html, body) {
+    margin: 0;
+    padding: 0;
+    min-height: 100%;
+    font-family: Arial, Helvetica, sans-serif;
+    color: #1f1a17;
   }
-</style>
 
-<style>
+  body {
+    min-height: 100vh;
+    background-image: url("/assets/brick-base.svg");
+    background-repeat: repeat;
+    background-size: 120px auto;
+    background-color: #c44b3c;
+  }
+
+  .pageShell {
+    width: 100%;
+    min-height: 100vh;
+    padding: 28px 16px 56px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .navRow {
+    width: min(100%, 1100px);
+    margin-bottom: 12px;
+    display: flex;
+    justify-content: flex-start;
+  }
+
+  .backButton {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 10px 16px;
+    border-radius: 999px;
+    background: rgba(255, 244, 184, 0.96);
+    color: #1f1a17;
+    text-decoration: none;
+    font-weight: 700;
+    font-size: 0.95rem;
+    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.18);
+    transition: transform 0.18s ease, box-shadow 0.18s ease, background 0.18s ease;
+  }
+
+  .backButton:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 10px 18px rgba(0, 0, 0, 0.2);
+    background: #fff2a8;
+  }
+
+  .poster {
+    width: min(100%, 1100px);
+    background: rgba(255, 249, 240, 0.97);
+    border-radius: 28px;
+    overflow: hidden;
+    box-shadow:
+      0 18px 40px rgba(0, 0, 0, 0.24),
+      inset 0 0 0 2px rgba(255, 255, 255, 0.35);
+  }
+
+  .posterHeader {
+    background: #f4cf45;
+    padding: 26px 22px 24px;
+    border-bottom: 2px solid rgba(31, 26, 23, 0.12);
+  }
+
+  .eyebrow {
+    margin: 0 0 10px;
+    font-size: 0.82rem;
+    font-weight: 800;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    opacity: 0.75;
+  }
+
+  h1 {
+    margin: 0;
+    font-size: clamp(2rem, 4vw, 3.2rem);
+    line-height: 0.95;
+    letter-spacing: -0.03em;
+  }
+
+  .subtitle {
+    margin: 14px 0 0;
+    max-width: 40rem;
+    font-size: 1rem;
+    line-height: 1.55;
+  }
+
+  .searchWrap {
+    margin-top: 20px;
+    max-width: 640px;
+  }
+
   .srOnly {
     position: absolute;
     width: 1px;
@@ -168,44 +278,6 @@ const artists = (rawArtists as Artist[])
     clip: rect(0 0 0 0);
     white-space: nowrap;
     border: 0;
-  }
-
-  .artistsPage {
-    position: relative;
-    z-index: 2;
-    width: min(1100px, 100%);
-    margin: 0 auto;
-    padding: 24px 20px 48px;
-  }
-
-  .artistsHeader {
-    display: grid;
-    gap: 16px;
-    margin-bottom: 28px;
-  }
-
-  .backLink {
-    width: fit-content;
-    color: #ffffff;
-    text-decoration: none;
-    font-size: 0.95rem;
-    text-shadow: 0 2px 10px rgba(0, 0, 0, 0.25);
-  }
-
-  .backLink:hover {
-    text-decoration: underline;
-  }
-
-  .artistsHeader h1 {
-    margin: 0;
-    color: #ffffff;
-    font-size: clamp(2rem, 4vw, 3rem);
-    font-weight: 500;
-    text-shadow: 0 2px 10px rgba(0, 0, 0, 0.25);
-  }
-
-  .searchWrap {
-    max-width: 640px;
   }
 
   .searchInput {
@@ -230,10 +302,16 @@ const artists = (rawArtists as Artist[])
     outline-offset: 2px;
   }
 
+  .posterBody {
+    padding: 22px;
+    display: grid;
+    gap: 18px;
+  }
+
   .artistGrid {
     display: grid;
     grid-template-columns: repeat(4, minmax(0, 1fr));
-    gap: 20px;
+    gap: 22px;
     align-items: start;
   }
 
@@ -249,7 +327,7 @@ const artists = (rawArtists as Artist[])
   }
 
   .artistCard:focus-visible {
-    outline: 3px solid rgba(255, 255, 255, 0.95);
+    outline: 3px solid rgba(31, 26, 23, 0.9);
     outline-offset: 6px;
   }
 
@@ -259,6 +337,8 @@ const artists = (rawArtists as Artist[])
     aspect-ratio: 1 / 1.18;
     overflow: hidden;
     background: #d8d8d8;
+    border-radius: 20px;
+    box-shadow: 0 8px 18px rgba(0, 0, 0, 0.08);
   }
 
   .artistThumb {
@@ -266,6 +346,11 @@ const artists = (rawArtists as Artist[])
     width: 100%;
     height: 100%;
     object-fit: cover;
+    transition: transform 220ms ease;
+  }
+
+  .artistCard:hover .artistThumb {
+    transform: scale(1.03);
   }
 
   .artistInfo {
@@ -275,23 +360,49 @@ const artists = (rawArtists as Artist[])
     bottom: 0;
     padding: 14px 14px 16px;
     text-align: center;
-    background: rgba(255, 255, 255, 0.72);
+    background: rgba(255, 255, 255, 0.78);
     backdrop-filter: blur(2px);
     -webkit-backdrop-filter: blur(2px);
   }
 
-  .artistInfo h2 {
+  .artistLine {
     margin: 0;
-    font-size: clamp(1rem, 1.25vw, 1.2rem);
-    font-weight: 400;
-    line-height: 1.1;
+  }
+
+  .artistLinePrimary {
+    font-size: clamp(1rem, 1.15vw, 1.12rem);
+    font-weight: 700;
+    line-height: 1.12;
+    letter-spacing: 0.01em;
+  }
+
+  .artistLineSecondary {
+    margin-top: 5px;
+    font-size: clamp(0.76rem, 0.9vw, 0.84rem);
+    line-height: 1.2;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: rgba(17, 17, 17, 0.72);
+  }
+
+  .artistSocial {
+    display: inline-block;
+    margin-top: 10px;
+    padding: 8px 14px;
+    background: #f05545;
+    color: #ffffff;
+    font-size: 0.82rem;
+    font-weight: 700;
+    line-height: 1;
+    border-radius: 999px;
+    letter-spacing: 0.02em;
   }
 
   .noResults {
-    margin: 24px 0 0;
-    color: #ffffff;
+    margin: 0;
+    color: #1f1a17;
     font-size: 1rem;
-    text-shadow: 0 2px 10px rgba(0, 0, 0, 0.25);
+    line-height: 1.5;
   }
 
   @media (max-width: 1100px) {
@@ -306,23 +417,64 @@ const artists = (rawArtists as Artist[])
     }
   }
 
-  @media (max-width: 700px) {
-    .artistsPage {
-      padding: 20px 16px 36px;
+  @media (min-width: 720px) {
+    .pageShell {
+      padding: 36px 24px 72px;
     }
 
+    .posterHeader {
+      padding: 34px 32px 28px;
+    }
+
+    .posterBody {
+      padding: 28px;
+    }
+  }
+
+  @media (max-width: 700px) {
     .artistGrid {
       grid-template-columns: 1fr;
       gap: 18px;
     }
 
+    .artistLinePrimary {
+      font-size: 1.15rem;
+    }
+
+    .artistLineSecondary {
+      font-size: 0.8rem;
+    }
+
+    .artistSocial {
+      font-size: 0.82rem;
+    }
+  }
+
+  @media (max-width: 520px) {
+    .pageShell {
+      padding-top: 18px;
+      padding-left: 12px;
+      padding-right: 12px;
+    }
+
+    .poster {
+      border-radius: 22px;
+    }
+
+    .posterHeader,
+    .posterBody {
+      padding-left: 16px;
+      padding-right: 16px;
+    }
+
+    .backButton {
+      font-size: 0.9rem;
+      padding: 9px 14px;
+    }
+
     .searchInput {
       height: 50px;
       font-size: 0.95rem;
-    }
-
-    .artistInfo h2 {
-      font-size: 1.35rem;
     }
   }
 </style>
