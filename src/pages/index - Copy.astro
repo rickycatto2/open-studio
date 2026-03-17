@@ -1,0 +1,307 @@
+---
+const windows = [
+  { title: "", bg: "/assets/window_food.svg", isStatic: true },
+  { title: "", bg: "/assets/window_date.svg", isStatic: true },
+  { title: "Artists", href: "/artists", bg: "/assets/window_artists.svg" },
+
+  { title: "Entertainment", href: "/entertainment", bg: "/assets/window_entertainment.svg" },
+  { title: "Parking", href: "/parking", bg: "/assets/window_parking.svg" },
+  { title: "Connect", href: "/connect", bg: "/assets/window_subscribe.svg" },
+
+  { title: "", bg: "/assets/sponsor1.png", isStatic: true },
+  { title: "", bg: "/assets/sponsor2.png", isStatic: true },
+  { title: "", bg: "/assets/sponsor3.png", isStatic: true },
+  { title: "", bg: "/assets/sponsor4.png", isStatic: true },
+  { title: "", bg: "/assets/sponsor5.png", isStatic: true },
+  { title: "", bg: "/assets/sponsor6.png", isStatic: true }
+];
+---
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Livestock Exchange Open Studios | Spring 2026</title>
+    <meta
+      name="description"
+      content="Open Studios home page."
+    />
+  </head>
+
+  <body>
+    <div class="pageShell">
+      <main class="home">
+        <section class="windowGrid" aria-label="Site sections">
+          {windows.map((w) =>
+            w.isStatic ? (
+              <div class="windowTile windowTileStatic" aria-hidden="true">
+                <div class="windowShell">
+                  <img
+                    src={w.bg}
+                    alt=""
+                    class="windowLayer windowBackground"
+                    loading="eager"
+                    decoding="async"
+                  />
+
+                  <img
+                    src="/assets/window_frame.svg"
+                    alt=""
+                    class="windowLayer windowFrame"
+                    loading="eager"
+                    decoding="async"
+                  />
+                </div>
+              </div>
+            ) : (
+              <a class="windowTile windowLink" href={w.href} aria-label={w.title}>
+                <div class="windowShell">
+                  <img
+                    src={w.bg}
+                    alt=""
+                    class="windowLayer windowBackground"
+                    loading="eager"
+                    decoding="async"
+                  />
+
+                  <img
+                    src="/assets/window_frame.svg"
+                    alt=""
+                    class="windowLayer windowFrame"
+                    loading="eager"
+                    decoding="async"
+                  />
+                </div>
+              </a>
+            )
+          )}
+        </section>
+
+        <footer class="siteFooter" aria-label="Credits">
+          <div class="footerShell">
+            <img
+              src="/assets/footer_truck.png"
+              alt=""
+              class="footerTruck"
+              loading="eager"
+              decoding="async"
+            />
+
+            <img
+              src="/assets/footer_rotate.svg"
+              alt=""
+              class="footerRotate"
+              aria-hidden="true"
+              loading="eager"
+              decoding="async"
+            />
+
+            <a
+              href="https://lauren-taylor-design.com/"
+              target="_blank"
+              rel="noopener noreferrer"
+              class="footerLink linkLauren"
+              aria-label="Lauren Taylor Website"
+            ></a>
+
+            <a
+              href="https://rickycatto.com/"
+              target="_blank"
+              rel="noopener noreferrer"
+              class="footerLink linkRicky"
+              aria-label="Ricky Catto Website"
+            ></a>
+          </div>
+        </footer>
+      </main>
+    </div>
+  </body>
+</html>
+
+<style>
+  :global(*) {
+    box-sizing: border-box;
+  }
+
+  :global(html, body) {
+    margin: 0;
+    padding: 0;
+    min-height: 100%;
+    font-family: Arial, Helvetica, sans-serif;
+  }
+
+  body {
+    min-height: 100vh;
+    background-image: url("/assets/brick-base.svg");
+    background-repeat: repeat;
+    background-size: 120px auto;
+    background-position: top left;
+    background-color: #c44b3c;
+  }
+
+  :global(img) {
+    max-width: 100%;
+  }
+
+  .pageShell {
+    width: 100%;
+    min-height: 100vh;
+    padding: 28px 16px 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .home {
+    min-height: 100vh;
+    width: 100%;
+    max-width: 1120px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-between;
+    gap: 32px;
+  }
+
+  .windowGrid {
+    width: 100%;
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 28px 24px;
+    justify-items: center;
+    align-items: center;
+  }
+
+  .windowTile {
+    display: flex;
+    justify-content: center;
+    width: 100%;
+  }
+
+  .windowLink {
+    text-decoration: none;
+    transition: transform 160ms ease;
+  }
+
+  .windowLink:hover {
+    transform: translateY(-4px);
+  }
+
+  .windowShell {
+    position: relative;
+    width: min(100%, 320px);
+    aspect-ratio: 270.782 / 377.165;
+  }
+
+  .windowLayer {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+  }
+
+  .windowBackground {
+    z-index: 1;
+  }
+
+  .windowFrame {
+    z-index: 3;
+    pointer-events: none;
+  }
+
+  .siteFooter {
+    display: flex;
+    justify-content: center;
+    width: 100%;
+    margin-top: auto;
+  }
+
+  .footerShell {
+    position: relative;
+    width: min(720px, 95vw);
+    line-height: 0;
+  }
+
+  .footerTruck {
+    display: block;
+    width: 100%;
+    height: auto;
+  }
+
+  .footerRotate {
+    position: absolute;
+    left: 74%;
+    top: 50%;
+    width: 20%;
+    height: auto;
+    transform-origin: center center;
+    animation: spinTruck 28s linear infinite;
+    pointer-events: none;
+  }
+
+  @keyframes spinTruck {
+    from {
+      transform: rotate(0deg);
+    }
+    to {
+      transform: rotate(360deg);
+    }
+  }
+
+  .footerLink {
+    position: absolute;
+    display: block;
+  }
+
+  .linkLauren {
+    left: 37%;
+    top: 60%;
+    width: 26%;
+    height: 11%;
+    transform: translateY(30px);
+  }
+
+  .linkRicky {
+    left: 37%;
+    top: 70%;
+    width: 26%;
+    height: 11%;
+    transform: translateY(30px);
+  }
+
+  .footerLink:hover {
+    cursor: pointer;
+  }
+
+  @media (min-width: 720px) {
+    .pageShell {
+      padding: 36px 24px 0;
+    }
+  }
+
+  @media (max-width: 900px) {
+    .home {
+      gap: 24px;
+    }
+
+    .windowGrid {
+      width: min(340px, 100%);
+      grid-template-columns: 1fr;
+      gap: 24px;
+    }
+
+    .footerShell {
+      width: min(520px, 95vw);
+    }
+  }
+
+  @media (max-width: 720px) {
+    body {
+      background-size: 92px auto;
+    }
+
+    .pageShell {
+      padding: 18px 12px 0;
+    }
+  }
+</style>
