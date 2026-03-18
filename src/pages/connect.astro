@@ -44,7 +44,7 @@ const plainPartners = partners.filter((partner) => !partner.url);
     <title>Connect</title>
     <meta
       name="description"
-      content="Follow updates, subscribe by email, and meet our support partners."
+      content="Follow updates, send us questions by email, and meet our support partners."
     />
   </head>
 
@@ -59,8 +59,8 @@ const plainPartners = partners.filter((partner) => !partner.url);
           <p class="eyebrow">Open Studios</p>
           <h1>Connect</h1>
           <p class="intro">
-            Follow along, subscribe for updates, and meet the support partners
-            helping make this event happen.
+            Follow along, send us questions, subscribe for updates, and meet the
+            support partners helping make this event happen.
           </p>
         </header>
 
@@ -86,6 +86,29 @@ const plainPartners = partners.filter((partner) => !partner.url);
                 </article>
               ))}
             </div>
+          </section>
+
+          <section class="infoSection">
+            <div class="sectionBanner">
+              <h2>Questions?</h2>
+            </div>
+
+            <article class="infoCard questionCard">
+              <h3>Get in Touch</h3>
+              <p class="description">
+                Have a question about the event? Send us an email and we’ll point
+                you in the right direction.
+              </p>
+
+              <p class="buttonWrap">
+                <a
+                  class="actionButton"
+                  href="mailto:stockyardstudios@gmail.com"
+                >
+                  Email
+                </a>
+              </p>
+            </article>
           </section>
 
           <section class="infoSection">
@@ -329,6 +352,37 @@ const plainPartners = partners.filter((partner) => !partner.url);
     text-decoration-thickness: 2px;
   }
 
+  .questionCard {
+    background:
+      linear-gradient(180deg, rgba(255, 239, 196, 0.92), rgba(255, 255, 255, 0.96));
+  }
+
+  .buttonWrap {
+    margin: 1rem 0 0;
+  }
+
+  .actionButton {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border: 2px solid #132033;
+    border-radius: 999px;
+    padding: 0.9rem 1.2rem;
+    font: inherit;
+    font-weight: 700;
+    background: #ffe35c;
+    color: #132033;
+    text-decoration: none;
+    transition: transform 0.18s ease, box-shadow 0.18s ease, background 0.18s ease;
+    white-space: nowrap;
+  }
+
+  .actionButton:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 6px 14px rgba(0, 0, 0, 0.14);
+    background: #ffd23a;
+  }
+
   .subscribeCard {
     background:
       linear-gradient(180deg, rgba(196, 239, 255, 0.9), rgba(255, 255, 255, 0.95));
@@ -496,7 +550,8 @@ const plainPartners = partners.filter((partner) => !partner.url);
       grid-template-columns: 1fr;
     }
 
-    .subscribeForm button {
+    .subscribeForm button,
+    .actionButton {
       width: 100%;
     }
 
