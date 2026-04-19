@@ -1,7 +1,7 @@
 [
   {
     "day": "2026-05-15T05:00:00.000Z",
-    "time": "5:00 PM – 9:00 PM",
+    "time": "5:00 PM – 50:20 PM",
     "sortTime": "1899-12-30T23:00:00.000Z",
     "title": "Kickoff with Sass-A-Brass",
     "type": "music",
@@ -10,6 +10,20 @@
     "location": "Genessee St entrance",
     "description": "Opening kickoff performance.",
     "logo": "/assets/entertainment/sass-a-brass.png",
+    "url": "",
+    "sponsor": ""
+  },
+  {
+    "day": "2026-05-15T05:00:00.000Z",
+    "time": "5:00 PM – 9:00 PM",
+    "sortTime": "1899-12-30T23:00:00.000Z",
+    "title": "DJ Jon Sabillón",
+    "type": "music",
+    "UNNAMED_F": "https://www.instagram.com/jonsabillon/",
+    "performer": "DJ Jon Sabillón",
+    "location": "2nd floor",
+    "description": "DJ set on the second floor.",
+    "logo": "/assets/entertainment/jon-sabillon.png",
     "url": "",
     "sponsor": ""
   },
@@ -38,20 +52,6 @@
     "location": "Genessee St entrance",
     "description": "Ice cream truck on site during the kickoff.",
     "logo": "/assets/vendors/tasty-unicorn.png",
-    "url": "",
-    "sponsor": ""
-  },
-  {
-    "day": "2026-05-15T05:00:00.000Z",
-    "time": "5:00 PM – 9:00 PM",
-    "sortTime": "1899-12-30T23:00:00.000Z",
-    "title": "DJ Jon Sabillon",
-    "type": "music",
-    "UNNAMED_F": "https://www.instagram.com/jonsabillon/",
-    "performer": "DJ Jon Sabillon",
-    "location": "2nd floor",
-    "description": "DJ set on the second floor.",
-    "logo": "/assets/entertainment/jon-sabillon.png",
     "url": "",
     "sponsor": ""
   },
